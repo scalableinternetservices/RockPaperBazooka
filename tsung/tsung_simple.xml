@@ -58,11 +58,24 @@
       <request>
            <http url='/matches' version='1.1' method='GET'></http>
       </request>
+      <!--Insert 1 call to /matches/id/join here for user 2-->
       <request subst="true">
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
+      </request>
+      <!--Insert 2 calls to /matches/id/play here (1 / user)-->
+      <request subst="true">
+           <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
+      </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
+      </request>
+      <request subst="true">
+           <http url='/users/%%_user1_id%%' version='1.1' method='GET'></http>
+      </request>
+      <request subst="true">
+           <http url='/users/%%_user2_id%%' version='1.1' method='GET'></http>
       </request>
     </session>
   </sessions>
 </tsung>
-                                                                                                                                                                                           46,1          Bot
 
