@@ -5,3 +5,4 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+default_configuration = GameConfiguration.create({name: "Rock, Paper, Scissors", num_matches: 3, input_set: "rock paper scissors"})
