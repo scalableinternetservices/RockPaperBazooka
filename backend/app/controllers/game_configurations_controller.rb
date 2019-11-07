@@ -17,8 +17,8 @@ class GameConfigurationsController < ApplicationController
   def create
     @game_configuration = GameConfiguration.new(game_configuration_params)
 
-    if !(game_configuration_params[:input_set] =~ /\A([A-Za-z]+ ){2,}[A-Za-z]+\z/) then 
-      render json: {status: "error", message: "The input set was not formed correctly"} and return
+    if !(game_configuration_params[:input_set] =~ /\A([A-Za-z0-9]+ ){2,}[A-Za-z0-9]+\z/) then 
+      render json: @game_configuration.errors, status: :unprocessable_entity and return
     end
 
     if @game_configuration.save
