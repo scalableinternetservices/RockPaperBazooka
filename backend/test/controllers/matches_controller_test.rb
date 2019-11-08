@@ -3,6 +3,9 @@ require 'test_helper'
 class MatchesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @match = matches(:one)
+    @user1 = users(:one)
+    @user2 = users(:two)
+    @game_configuration = game_configurations(:one)
   end
 
   test "should get index" do
@@ -12,9 +15,8 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
 
   test "should create match" do
     assert_difference('Match.count') do
-      post matches_url, params: { match: { input_set_1: @match.input_set_1, input_set_2: @match.input_set_2 } }, as: :json
+      post matches_url, params: { match: { user1_id: @user1.id, user2_id: @user2.id, game_configuration_id: @game_configuration.id } }, as: :json
     end
-
     assert_response 201
   end
 

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :matches do
+    resources :messages, only: [:index, :create]
     patch 'join', on: :member
   end
   resources :users

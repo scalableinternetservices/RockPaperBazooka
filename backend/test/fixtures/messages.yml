@@ -1,9 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  id: 1
-  name: User 1
+  content: MyString
+  user: one
+  match: one
 
 two:
-  id: 2
-  name: User 2
+  content: MyString
+  user: two
+  match: two

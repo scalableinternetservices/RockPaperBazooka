@@ -1,9 +1,17 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  id: 1
   input_set_1: MyString
   input_set_2: MyString
+  user1_id: 1
+  user2_id: 2
+  game_configuration_id: 1
 
 two:
+  id: 2
   input_set_1: MyString
   input_set_2: MyString
+  user1_id: 2
+  user2_id: 1
+  game_configuration_id: 2
