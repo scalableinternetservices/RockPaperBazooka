@@ -3,8 +3,11 @@ require 'test_helper'
 class MatchesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @match = matches(:one)
+    @player2_turn_match = matches(:player_two_turn_match)
+    @finished_match = matches(:finished_match)
     @user1 = users(:one)
     @user2 = users(:two)
+    @user3 = users(:three)
     @game_configuration = game_configurations(:one)
   end
 
@@ -36,5 +39,39 @@ class MatchesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response 204
+  end
+
+  test "should play one move" do
+    patch match_url(@match) + '/play', params: { player_id: 1, game_input: 'Rock' }, as: :json
+    assert_response 201
+  end
+
+  test "should not allow other users to play" do
+    patch match_url(@match) + '/play', params: { player_id: 3, game_input: 'Rock' }, as: :json
+    assert_response 401
+    assert response.body.include?('Not a valid player_id')
+  end
+
+  test "should not allow invalid inputs" do
+    patch match_url(@match) + '/play', params: { player_id: 1, game_input: 'Bazoooka' }, as: :json
+    assert_response 422
+    assert response.body.include?('Not a valid input')
+  end
+
+  test "should not turn desync" do
+    patch match_url(@player2_turn_match) + '/play', params: { player_id: 1, game_input: 'Rock' }, as: :json
+    assert_response 401
+    assert response.body.include?('Not your turn')
+    patch match_url(@player2_turn_match) + '/play', params: { player_id: 2, game_input: 'Rock' }, as: :json
+    assert_response 201
+  end
+
+  test "should not allow moves when move cap reached" do
+    patch match_url(@finished_match) + '/play', params: { player_id: 1, game_input: 'Rock' }, as: :json
+    assert_response 401
+    assert response.body.include?('Maximum number of turns exceeded')
+    patch match_url(@finished_match) + '/play', params: { player_id: 2, game_input: 'Rock' }, as: :json
+    assert_response 401
+    assert response.body.include?('Maximum number of turns exceeded')
   end
 end

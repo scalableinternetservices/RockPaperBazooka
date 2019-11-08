@@ -2,16 +2,30 @@
 
 one:
   id: 1
-  input_set_1: MyString
-  input_set_2: MyString
   user1_id: 1
   user2_id: 2
   game_configuration_id: 1
 
 two:
   id: 2
-  input_set_1: MyString
-  input_set_2: MyString
+  input_set_1: Rock
+  input_set_2: Scissors
   user1_id: 2
   user2_id: 1
+  game_configuration_id: 2
+
+finished_match:
+  id: 3
+  input_set_1: Rock Rock Rock
+  input_set_2: Paper Paper Paper
+  user1_id: 2
+  user2_id: 1
+  game_configuration_id: 2
+
+player_two_turn_match:
+  id: 4
+  input_set_1: Rock Rock
+  input_set_2: Paper
+  user1_id: 1
+  user2_id: 2
   game_configuration_id: 2

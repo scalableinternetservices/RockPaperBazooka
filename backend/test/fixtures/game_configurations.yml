@@ -9,5 +9,5 @@ one:
 two:
   id: 2
   name: Rock Paper Bazooka
-  num_matches: 1
+  num_matches: 3
   input_set: Rock Paper Bazooka
