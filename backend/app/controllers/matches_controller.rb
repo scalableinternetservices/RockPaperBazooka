@@ -1,5 +1,5 @@
 class MatchesController < ApplicationController
-  before_action :set_match, only: [:show, :update, :destroy]
+  before_action :set_match, only: [:show, :join, :update, :destroy]
 
   # GET /matches
   def index
@@ -19,6 +19,14 @@ class MatchesController < ApplicationController
 
     if @match.save
       render json: @match, status: :created, location: @match
+    else
+      render json: @match.errors, status: :unprocessable_entity
+    end
+  end
+
+  def join
+    if !@match.user2_id && (join_params.to_i != @match.user1_id) && @match.update_attribute(:user2_id, join_params)
+      render json: @match
     else
       render json: @match.errors, status: :unprocessable_entity
     end
@@ -47,5 +55,9 @@ class MatchesController < ApplicationController
     # Only allow a trusted parameter "white list" through.
     def match_params
       params.require(:match).permit(:user1_id, :user2_id, :game_configuration_id, :input_set_1, :input_set_2)
+    end
+
+    def join_params
+      params.require(:user2_id)
     end
 end
