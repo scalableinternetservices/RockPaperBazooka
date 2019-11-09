@@ -46,14 +46,6 @@ class GameConfigurationsControllerTest < ActionDispatch::IntegrationTest
     assert_response 200
   end
 
-  test "should destroy game_configuration" do
-    assert_difference('GameConfiguration.count', -1) do
-      delete game_configuration_url(@game_configuration), as: :json
-    end
-
-    assert_response 204
-  end
-
   test "should not be able to create invalid input_sets: too few strings" do
     local_game_configuation = GameConfiguration.new(
       :name => 'Test2',
