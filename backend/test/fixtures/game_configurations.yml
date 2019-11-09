@@ -2,12 +2,12 @@
 
 one:
   id: 1
-  name: Rock Paper Scissors
+  name: FirstFixture
   num_matches: 1
   input_set: Rock Paper Scissors
 
 two:
   id: 2
-  name: Rock Paper Bazooka
+  name: SecondFixture
   num_matches: 3
   input_set: Rock Paper Bazooka
