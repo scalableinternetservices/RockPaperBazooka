@@ -18,8 +18,10 @@ class GameConfigurationsController < ApplicationController
     @game_configuration = GameConfiguration.new(game_configuration_params)
 
     if !(game_configuration_params[:input_set] =~ /\A([A-Za-z0-9]+ ){2,}[A-Za-z0-9]+\z/) then 
-      render json: @game_configuration.errors, status: :unprocessable_entity and return
+      render json: {:error => "Unprocessable items"}, status: 422 and return
     end
+    
+    return render json: {:error => "Duplicate items"}, status: 422 if game_configuration_params[:input_set].split(' ').uniq!
 
     if @game_configuration.save
       render json: @game_configuration, status: :created, location: @game_configuration

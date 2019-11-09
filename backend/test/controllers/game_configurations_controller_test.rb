@@ -58,7 +58,7 @@ class GameConfigurationsControllerTest < ActionDispatch::IntegrationTest
     local_game_configuation = GameConfiguration.new(
       :name => 'Test2',
       :num_matches => 1,
-      :input_set => 'test2 test2'
+      :input_set => 'test testtwo'
     )
     post game_configurations_url, params: { game_configuration: { input_set: local_game_configuation.input_set, name: local_game_configuation.name, num_matches: local_game_configuation.num_matches } }, as: :json
     
@@ -69,7 +69,7 @@ class GameConfigurationsControllerTest < ActionDispatch::IntegrationTest
     local_game_configuation = GameConfiguration.new(
       :name => 'Test3',
       :num_matches => 1,
-      :input_set => 'test3 test3 test3 test3__$'
+      :input_set => 'test1 test2 test3 test4__$'
     )
     post game_configurations_url, params: { game_configuration: { input_set: local_game_configuation.input_set, name: local_game_configuation.name, num_matches: local_game_configuation.num_matches } }, as: :json
     
@@ -80,7 +80,7 @@ class GameConfigurationsControllerTest < ActionDispatch::IntegrationTest
     local_game_configuation = GameConfiguration.new(
       :name => 'Test4',
       :num_matches => 1,
-      :input_set => 'test4 test4 test4 test4  '
+      :input_set => 'test1 test2 test3 test4  '
     )
     post game_configurations_url, params: { game_configuration: { input_set: local_game_configuation.input_set, name: local_game_configuation.name, num_matches: local_game_configuation.num_matches } }, as: :json
     
@@ -103,6 +103,17 @@ class GameConfigurationsControllerTest < ActionDispatch::IntegrationTest
       :name => 'FirstFixture',
       :num_matches => 1,
       :input_set => 'Rock Paper Scissors'
+    )
+    post game_configurations_url, params: { game_configuration: { input_set: local_game_configuation.input_set, name: local_game_configuation.name, num_matches: local_game_configuation.num_matches } }, as: :json
+    
+    assert_response 422
+  end
+
+  test "should not be able to create with duplicate items" do
+    local_game_configuation = GameConfiguration.new(
+      :name => 'DuplicateTest',
+      :num_matches => 1,
+      :input_set => 'Rock Paper Scissors Rock'
     )
     post game_configurations_url, params: { game_configuration: { input_set: local_game_configuation.input_set, name: local_game_configuation.name, num_matches: local_game_configuation.num_matches } }, as: :json
     
