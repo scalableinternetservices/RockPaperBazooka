@@ -36,6 +36,9 @@
       <setdynvars sourcetype="random_string" length="10">
            <var name="user2_name"/>
       </setdynvars>
+      <setdynvars sourcetype="random_string" length="10">
+           <var name="input_set_var3"/>
+      </setdynvars>
       <request subst="true">
            <dyn_variable name="user1_id" re="Location: http://.*/users/(.*)\r" ></dyn_variable>
            <http url='/users' version='1.1' method='POST' content_type='application/json' contents='{&quot;name&quot;: &quot;%%_user1_name%%&quot;}'></http>
@@ -46,11 +49,11 @@
       </request>
       <request subst="true">
            <dyn_variable name="game_configuration_id" re="Location: http://.*/game_configurations/(.*)\r" ></dyn_variable>
-           <http url='/game_configurations' version='1.1' method='POST' content_type='application/json' contents='{&quot;name&quot;: &quot;%%_user2_name%%&quot;, &quot;num_matches&quot;: &quot;3&quot;, &quot;input_set&quot;: &quot;%%_user2_name%%&quot;}'></http>
+           <http url='/game_configurations' version='1.1' method='POST' content_type='application/json' contents='{&quot;name&quot;: &quot;%%_user1_name%%&quot;, &quot;num_matches&quot;: 1, &quot;input_set&quot;: &quot;%%_user1_name%% %%_user2_name%% %%_input_set_var3%%&quot;}'></http>
       </request>
       <request subst="true">
            <dyn_variable name="match_id" re="Location: http://.*/matches/(.*)\r" ></dyn_variable>
-           <http url='/matches' version='1.1' method='POST' content_type='application/json' contents='{&quot;user1_id&quot;: &quot;%%_user1_id%%&quot;, &quot;game_configuration_id&quot;: &quot;%%_game_configuration_id%%&quot;}'></http>
+           <http url='/matches' version='1.1' method='POST' content_type='application/json' contents='{&quot;user1_id&quot;: %%_user1_id%%, &quot;game_configuration_id&quot;: %%_game_configuration_id%%}'></http>
       </request>
       <request subst="true">
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
@@ -59,12 +62,17 @@
            <http url='/matches' version='1.1' method='GET'></http>
       </request>
       <request subst="true">
-           <http url='/matches/%%_match_id%%/join' version='1.1' method='PATCH' content_type='application/json' contents='{&quot;user2_id&quot;: &quot;%%_user2_id%%&quot;}'></http>
+           <http url='/matches/%%_match_id%%/join' version='1.1' method='PATCH' content_type='application/json' contents='{&quot;user2_id&quot;: %%_user2_id%%}'></http>
       </request>
       <request subst="true">
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
       </request>
-      <!--Insert 2 calls to /matches/id/play here (1 / user)-->
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/play' version='1.1' method='PATCH' content_type='application/json' contents='{&quot;player_id&quot;: %%_user1_id%%, &quot;game_input&quot;: &quot;%%_user1_name%%&quot;}'></http>
+      </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/play' version='1.1' method='PATCH' content_type='application/json' contents='{&quot;player_id&quot;: %%_user2_id%%, &quot;game_input&quot;: &quot;%%_user2_name%%&quot;}'></http>
+      </request>
       <request subst="true">
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
       </request>
@@ -80,3 +88,4 @@
     </session>
   </sessions>
 </tsung>
+
