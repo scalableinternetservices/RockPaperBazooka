@@ -58,6 +58,9 @@
       <request subst="true">
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
       </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='GET'></http>
+      </request>
       <request>
            <http url='/matches' version='1.1' method='GET'></http>
       </request>
@@ -68,10 +71,28 @@
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
       </request>
       <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='GET'></http>
+      </request>
+      <request subst="true">
            <http url='/matches/%%_match_id%%/play' version='1.1' method='PATCH' content_type='application/json' contents='{&quot;player_id&quot;: %%_user1_id%%, &quot;game_input&quot;: &quot;%%_user1_name%%&quot;}'></http>
       </request>
       <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='GET'></http>
+      </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='POST' content_type='application/json' contents='{&quot;user_id&quot;: %%_user1_id%%, &quot;content&quot;: &quot;Testing&quot;, &quot;match_id&quot;: %%_match_id%%}'></http>
+      </request>
+      <request subst="true">
            <http url='/matches/%%_match_id%%/play' version='1.1' method='PATCH' content_type='application/json' contents='{&quot;player_id&quot;: %%_user2_id%%, &quot;game_input&quot;: &quot;%%_user2_name%%&quot;}'></http>
+      </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='GET'></http>
+      </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='POST' content_type='application/json' contents='{&quot;user_id&quot;: %%_user2_id%%, &quot;content&quot;: &quot;Testing&quot;, &quot;match_id&quot;: %%_match_id%%}'></http>
+      </request>
+      <request subst="true">
+           <http url='/matches/%%_match_id%%/messages' version='1.1' method='GET'></http>
       </request>
       <request subst="true">
            <http url='/matches/%%_match_id%%' version='1.1' method='GET'></http>
@@ -88,4 +109,6 @@
     </session>
   </sessions>
 </tsung>
+
+
 
