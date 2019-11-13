@@ -27,6 +27,12 @@ class Client {
   static createGameConfigurations = data => {
     return axios.post("/game_configurations", data);
   };
+  static messages = id => {
+    return axios.get(`/matches/${id}/messages`);
+  };
+  static createMessage = (id, data) => {
+    return axios.post(`/matches/${id}/messages`, data);
+  };
 }
 
 export default Client;
