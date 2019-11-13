@@ -7,14 +7,9 @@ class Messages extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
-        id: 1,
-        messages: []
-=======
         id: this.props.id,
         messages: [],
         users: new Map()
->>>>>>> bacc752... fixup connect messages to client
     };
   }
 
@@ -22,20 +17,37 @@ class Messages extends React.Component {
       Client.messages(this.state.id)
         .then(response => {
             console.log(response);
+            const user_ids = [...new Set(response.data.map(message => message.user_id))];
             this.setState({ messages: response.data });
+            this.getUserNames(user_ids);
         })
         .catch(console.log);
   }
 
+  getUserNames = (user_ids) => {
+    user_ids.forEach(user_id => {
+        Client.getUser(user_id)
+            .then(response => {
+                const { users } = this.state;
+                console.log(response);
+                users.set(user_id, response.data.name);
+                this.setState({ users });
+            })
+            .catch(console.log);
+    });
+  };
+
   render() {
-    const user_ids = [...new Set(this.state.messages.map(message => message.user_id))];
     return (
         <div className="test">
           <ListGroup>
             <ListGroupItem color="primary">Messages</ListGroupItem>
                 {this.state.messages.map((message, index) => {
-                    const color = user_ids[0] === message.user_id ? 'light' : 'dark';
-                    return (<ListGroupItem key={message.id} style={{color: 'black'}} color={color}> <Badge>{message.user_id}</Badge>: {message.content} </ListGroupItem>);
+                    return (
+                        <ListGroupItem key={message.id}>
+                            <Badge>{this.state.users.get(message.user_id)}</Badge>: {message.content}
+                        </ListGroupItem>
+                    );
                 })}
           </ListGroup>
         </div>
