@@ -31,14 +31,16 @@ class Messages extends React.Component {
 
   getUserNames = (user_ids) => {
     user_ids.forEach(user_id => {
-        Client.getUser(user_id)
-            .then(response => {
-                const { users } = this.state;
-                console.log(response);
-                users.set(user_id, response.data.name);
-                this.setState({ users });
-            })
-            .catch(console.log);
+        if (!(this.state.users.get(user_id))) {
+            Client.getUser(user_id)
+                .then(response => {
+                    const { users } = this.state;
+                    console.log(response);
+                    users.set(user_id, response.data.name);
+                    this.setState({ users });
+                })
+                .catch(console.log);
+        }
     });
   };
 
