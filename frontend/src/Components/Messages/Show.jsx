@@ -14,6 +14,10 @@ class Messages extends React.Component {
   }
 
   componentDidMount() {
+    this.getMessages();
+  }
+
+  getMessages = () => {
       Client.messages(this.state.id)
         .then(response => {
             console.log(response);
@@ -22,7 +26,8 @@ class Messages extends React.Component {
             this.getUserNames(user_ids);
         })
         .catch(console.log);
-  }
+      setTimeout(this.getMessages, 2000);
+  };
 
   getUserNames = (user_ids) => {
     user_ids.forEach(user_id => {
@@ -39,7 +44,7 @@ class Messages extends React.Component {
 
   render() {
     return (
-        <div className="test">
+        <div>
           <ListGroup>
             <ListGroupItem color="primary">Messages</ListGroupItem>
                 {this.state.messages.map((message, index) => {
