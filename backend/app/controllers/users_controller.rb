@@ -38,6 +38,10 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def drop
+    User.delete_all
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

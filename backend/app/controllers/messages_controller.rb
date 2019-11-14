@@ -12,4 +12,8 @@ class MessagesController < ApplicationController
       render json: @message.errors, status: :unprocessable_entity
     end
   end
+
+  def drop
+    Message.delete_all
+  end
 end

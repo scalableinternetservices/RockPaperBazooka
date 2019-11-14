@@ -70,6 +70,17 @@ class MatchesController < ApplicationController
     @match.destroy
   end
 
+  def drop
+    Match.delete_all
+  end
+
+  def dropAll
+    Message.delete_all
+    Match.delete_all
+    User.delete_all
+    GameConfiguration.delete_all
+  end
+
   private
     def is_player?(match, player_id)
       [match.user1_id, match.user2_id].include?(player_id)

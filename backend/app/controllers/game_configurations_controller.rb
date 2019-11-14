@@ -17,10 +17,10 @@ class GameConfigurationsController < ApplicationController
   def create
     @game_configuration = GameConfiguration.new(game_configuration_params)
 
-    if !(game_configuration_params[:input_set] =~ /\A([A-Za-z0-9]+ ){2,}[A-Za-z0-9]+\z/) then 
+    if !(game_configuration_params[:input_set] =~ /\A([A-Za-z0-9]+ ){2,}[A-Za-z0-9]+\z/) then
       render json: {:error => "Unprocessable items"}, status: 422 and return
     end
-    
+
     return render json: {:error => "Duplicate items"}, status: 422 if game_configuration_params[:input_set].split(' ').uniq!
 
     if @game_configuration.save
@@ -42,6 +42,10 @@ class GameConfigurationsController < ApplicationController
   # DELETE /game_configurations/1
   def destroy
     @game_configuration.destroy
+  end
+
+  def drop
+    GameConfiguration.delete_all
   end
 
   private
