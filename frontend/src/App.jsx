@@ -12,12 +12,12 @@ function App() {
   return (
     <div className="App">
       <MatchTable />
-      {/* <Match match={{ game_configuration_id: 0 }} />
+      <Match match={{ game_configuration_id: 0 }} />
       <MatchForm /> <br />
       <GameConfiguration gameConfiguration={{}} />
       <GameConfigurationForm /> <br />
       <User user={{ name: "Scotty McGee" }} />
-      <UserForm /> */}
+      <UserForm />
     </div>
   );
 }

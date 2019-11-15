@@ -54,7 +54,7 @@ class MatchTable extends React.Component{
         for (const [index, value] of this.state.matches.entries()) {
             items.push(
                 <tr>
-                    <th scope="row">{index}</th>
+                    <td scope="row">{value.user2_id ? 'Spectate' : 'Join'}</td>
                     <td>{this.state.users.get(value.user1_id)}</td>
                     <td>{this.state.users.get(value.user2_id)}</td>
                     <td>{value.game_configuration_id}</td>
@@ -66,7 +66,7 @@ class MatchTable extends React.Component{
             <Table>
                 <thead>
                     <tr>
-                        <th>#</th>
+                        <th>Join / Spectate</th>
                         <th>Player 1</th>
                         <th>Player 2</th>
                         <th>Configuration</th>
