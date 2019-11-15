@@ -50,7 +50,7 @@ class UserForm extends React.Component {
   render() {
     return (
       <div>
-          {this.state.loggedIn ? <Redirect to='/user' /> : null}
+          {this.state.loggedIn ? <Redirect to='/matches' /> : null}
           <Form onSubmit={this.onSubmit}>
             <Input
               name="name"

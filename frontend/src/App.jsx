@@ -45,6 +45,9 @@ class App extends React.Component {
                         <Match match={{ game_configuration_id: 0 }} />
                         <MatchForm /> <br />
                     </Route>
+                    <Route path="/matches">
+                        <MatchTable />
+                    </Route>
                     <Route path="/user">
                         <User user={{ name: this.state.name }} />
                     </Route>
