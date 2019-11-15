@@ -20,13 +20,18 @@ class App extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
-          name: ""
+          name: "",
+          currentMatchId: 1
       };
   }
 
   updateName = (name) => {
       this.setState({ name });
-  }
+  };
+
+  updateCurrentMatch = (matchId) => {
+      this.setState({ currentMatchId: matchId });
+  };
 
   render() {
       return (
@@ -42,11 +47,11 @@ class App extends React.Component {
                         <MessageForm match_id={1} user_id={1} /> <br />
                     </Route>
                     <Route path="/match">
-                        <Match match={{ game_configuration_id: 0 }} />
+                        <Match matchId={this.state.currentMatchId} />
                         <MatchForm /> <br />
                     </Route>
                     <Route path="/matches">
-                        <MatchTable />
+                        <MatchTable updateCurrentMatch={this.updateCurrentMatch} />
                     </Route>
                     <Route path="/user">
                         <User user={{ name: this.state.name }} />

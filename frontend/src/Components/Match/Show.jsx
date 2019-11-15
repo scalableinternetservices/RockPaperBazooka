@@ -1,10 +1,10 @@
 import React from 'react';
 
 function Show(props) {
-  let match = props.match;
+  let matchId = props.matchId;
   return (
     <div>
-      <p>Configuration id: {match.game_configuration_id}</p>
+      <p>Match id: {matchId}</p>
       <a href='matches/id/edit'>Edit</a> <br />
       <a href='matches/id/delete'>Delete</a>
     </div>
