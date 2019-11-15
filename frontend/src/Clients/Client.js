@@ -7,10 +7,10 @@ class Client {
     return axios.get("/users");
   };
   static getUser = id => {
-    return axios.get(`/users/{id}`);
+    return axios.get(`/users/${id}`);
   };
   static deleteUser = id => {
-    return axios.delete(`/users/{id}`);
+    return axios.delete(`/users/${id}`);
   };
   static createUser = data => {
     return axios.post("/users", data);
