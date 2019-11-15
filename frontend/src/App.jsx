@@ -6,12 +6,9 @@ import UserForm from "./Components/User/Form";
 import User from "./Components/User/Show";
 import MatchForm from "./Components/Match/Form";
 import Match from "./Components/Match/Show";
-<<<<<<< HEAD
 import MatchTable from "./Components/MatchTable/MatchTable"
-=======
 import Messages from "./Components/Messages/Show";
 import MessageForm from "./Components/Messages/Form";
->>>>>>> at - show messaging on main page for now
 
 function App() {
   return (
