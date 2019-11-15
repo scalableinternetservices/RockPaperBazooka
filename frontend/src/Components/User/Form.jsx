@@ -1,11 +1,17 @@
 import React from "react";
 import { Form, Button, Input } from "reactstrap";
 import Client from "../../Clients/Client";
+import {
+  Redirect
+} from "react-router-dom";
 
 class UserForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "" };
+    this.state = {
+        name: "",
+        loggedIn: false
+    };
     Client.users()
       .then(console.log)
       .catch(console.log);
@@ -28,26 +34,36 @@ class UserForm extends React.Component {
     console.log(this.state);
     Client.createUser(this.state)
       .then(response => {
-        console.log("It works!");
+        this.props.updateName(this.state.name);
         this.clearForm();
+        this.setState({ loggedIn: true });
       })
-      .catch(console.log);
+      .catch(error => {
+        if (error.response.data.name[0] === 'has already been taken') {
+            this.props.updateName(this.state.name);
+            this.clearForm();
+            this.setState({ loggedIn: true });
+        }
+    });
   };
 
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
-        <Input
-          name="name"
-          placeholder="name"
-          onChange={this.onChange}
-          value={this.state.name}
-        ></Input>
-        <br />
-        <Button type="submit" color="primary">
-          Submit
-        </Button>
-      </Form>
+      <div>
+          {this.state.loggedIn ? <Redirect to='/user' /> : null}
+          <Form onSubmit={this.onSubmit}>
+            <Input
+              name="name"
+              placeholder="name"
+              onChange={this.onChange}
+              value={this.state.name}
+            ></Input>
+            <br />
+            <Button type="submit" color="primary">
+              Submit
+            </Button>
+          </Form>
+      </div>
     );
   }
 }
