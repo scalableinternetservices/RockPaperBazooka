@@ -35,9 +35,10 @@ class UserForm extends React.Component {
     console.log(this.state);
     Client.createUser(this.state)
       .then(response => {
-        this.props.updateName(this.state.name);
+        this.props.updateName(this.state.name, this.response.data.id);
         this.clearForm();
         this.setState({ loggedIn: true });
+
       })
       .catch(error => {
         if (error.response.data.name[0] === 'has already been taken') {

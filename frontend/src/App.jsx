@@ -22,12 +22,16 @@ class App extends React.Component {
       super(props);
       this.state = {
           name: "",
-          currentMatchId: 1
+          id: 2,
+          currentMatchId: 3
       };
   }
 
-  updateName = (name) => {
-      this.setState({ name });
+  updateName = (name, id) => {
+      this.setState({
+        name,
+        id 
+      });
   };
 
   updateCurrentMatch = (matchId) => {
@@ -52,7 +56,7 @@ class App extends React.Component {
                         <MatchForm />
                     </Route>
                     <Route path="/match">
-                        <Match matchId={this.state.currentMatchId} />
+                        <Match matchId={this.state.currentMatchId} userId={this.state.id} />
                     </Route>
                     <Route path="/matches">
                         <MatchTable updateCurrentMatch={this.updateCurrentMatch} />

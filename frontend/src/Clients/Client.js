@@ -39,6 +39,12 @@ class Client {
   static createMessage = (id, data) => {
     return axios.post(`/matches/${id}/messages`, data);
   };
+  static play = (id, player_id, game_input) => {
+    return axios.patch(`/matches/${id}/play`, {
+      player_id,
+      game_input
+    })
+  }
 }
 
 export default Client;
