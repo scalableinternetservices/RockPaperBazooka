@@ -39,7 +39,7 @@ class App extends React.Component {
             <div className="App">
                 <Switch>
                     <Route path="/configuration">
-                        <GameConfiguration gameConfiguration={{}} />
+                        <GameConfiguration gameConfigurationId={1} />
                         <GameConfigurationForm /> <br />
                     </Route>
                     <Route path="/messages">
