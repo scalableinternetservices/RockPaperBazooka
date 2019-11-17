@@ -17,6 +17,10 @@ class Messages extends React.Component {
     this.getMessages();
   }
 
+  componentWillUnmount() {
+      clearTimeout(this.timeoutId);
+  }
+
   getMessages = () => {
       Client.messages(this.state.id)
         .then(response => {
@@ -26,7 +30,7 @@ class Messages extends React.Component {
             this.getUserNames(user_ids);
         })
         .catch(console.log);
-      setTimeout(this.getMessages, 2000);
+      this.timeoutId = setTimeout(this.getMessages, 2000);
   };
 
   getUserNames = (user_ids) => {

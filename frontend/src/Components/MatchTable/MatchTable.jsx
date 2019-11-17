@@ -19,6 +19,10 @@ class MatchTable extends React.Component{
         this.getMatches()
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timeoutId);
+    }
+
     getMatches = () => {
         Client.matches()
             .then(response => {
@@ -34,7 +38,7 @@ class MatchTable extends React.Component{
                 this.getUserNames(user_ids)
             })
             .catch(console.log);
-        setTimeout(this.getMatches, 2000);
+        this.timeoutId = setTimeout(this.getMatches, 2000);
     };
 
     getUserNames = (user_ids) => {
