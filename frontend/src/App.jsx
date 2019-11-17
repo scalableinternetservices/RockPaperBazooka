@@ -48,9 +48,11 @@ class App extends React.Component {
                         <Messages id={1} />
                         <MessageForm match_id={1} user_id={1} /> <br />
                     </Route>
+                    <Route path="/create">
+                        <MatchForm />
+                    </Route>
                     <Route path="/match">
                         <Match matchId={this.state.currentMatchId} />
-                        <MatchForm /> <br />
                     </Route>
                     <Route path="/matches">
                         <MatchTable updateCurrentMatch={this.updateCurrentMatch} />
