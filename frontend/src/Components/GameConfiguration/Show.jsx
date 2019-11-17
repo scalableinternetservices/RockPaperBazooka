@@ -1,19 +1,37 @@
 import React from 'react';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import Client from "../../Clients/Client";
 
-function Show(props) {
-  let config = props.gameConfiguration;
-  config.name = 'Rock Paper Scissors';
-  config.numMatches = 5;
-  config.inputSet = 'rock paper scissors';
-  return (
-    <div>
-      <p>Name: {config.name}</p>
-      <p>Number of Matches: {config.numMatches}</p>
-      <p>Input Set: {config.inputSet}</p>
-      <a href='gameConfigurations/id/edit'>Edit</a> <br />
-      <a href='gameConfigurations/id/delete'>Delete</a>
-    </div>
-  );
+class Show extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            configurationId: this.props.gameConfigurationId,
+            configuration: {}
+        };
+    }
+
+    componentDidMount() {
+        Client.gameConfiguration(this.state.configurationId)
+          .then(response => {
+              console.log(response);
+              this.setState({ configuration: response.data });
+          })
+          .catch(console.log);
+    }
+
+    render() {
+      return (
+        <div>
+            <ListGroup>
+              <ListGroupItem>Name: {this.state.configuration.name}</ListGroupItem>
+              <ListGroupItem>Number of Matches: {this.state.configuration.num_matches}</ListGroupItem>
+              <ListGroupItem>Input Set: {this.state.configuration.input_set}</ListGroupItem>
+            </ListGroup>
+        </div>
+      );
+    }
 }
 
 export default Show;
