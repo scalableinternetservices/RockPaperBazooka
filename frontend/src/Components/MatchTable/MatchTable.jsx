@@ -1,13 +1,17 @@
 import React from 'react';
 import Client from "../../Clients/Client";
-import { Table } from 'reactstrap'
+import { Button, Table } from 'reactstrap'
+import {
+  Redirect
+} from "react-router-dom";
 
 class MatchTable extends React.Component{
     constructor(props){
             super(props)
             this.state = {
                 matches: [],
-                users: new Map()
+                users: new Map(),
+                redirect: false
             }
     }
 
@@ -48,13 +52,18 @@ class MatchTable extends React.Component{
         });
       };
 
+    onClick = (matchId) => {
+        this.props.updateCurrentMatch(matchId);
+        this.setState({ redirect: true });
+    };
+
     render() {
 
         const items = []
         for (const [index, value] of this.state.matches.entries()) {
             items.push(
                 <tr>
-                    <td scope="row">{value.user2_id ? 'Spectate' : 'Join'}</td>
+                    <td scope="row"><Button type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
                     <td>{this.state.users.get(value.user1_id)}</td>
                     <td>{this.state.users.get(value.user2_id)}</td>
                     <td>{value.game_configuration_id}</td>
@@ -63,19 +72,22 @@ class MatchTable extends React.Component{
         }
 
         return (
-            <Table>
-                <thead>
-                    <tr>
-                        <th>Join / Spectate</th>
-                        <th>Player 1</th>
-                        <th>Player 2</th>
-                        <th>Configuration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {items}
-                </tbody>
-            </Table>
+            <div>
+                {this.state.redirect ? <Redirect to='/match' /> : null}
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Join / Spectate</th>
+                            <th>Player 1</th>
+                            <th>Player 2</th>
+                            <th>Configuration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items}
+                    </tbody>
+                </Table>
+            </div>
         );
     }
 }
