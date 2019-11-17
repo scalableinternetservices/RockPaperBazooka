@@ -1,10 +1,15 @@
 import React from 'react';
 import { Form, Button, Input } from 'reactstrap';
+import Client from "../../Clients/Client";
 
 class ConfigForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: '', numMatches: 0, inputSet: '' };
+    this.state = {
+        name: '',
+        num_matches: 0,
+        input_set: ''
+    };
   }
 
   onChange = e => {
@@ -18,7 +23,11 @@ class ConfigForm extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     console.log(this.state);
-    // this.props.onSubmit();
+    Client.createGameConfigurations(this.state)
+      .then(response => {
+          console.log(response);
+      })
+      .catch(console.log);
   };
 
   render() {
@@ -27,14 +36,14 @@ class ConfigForm extends React.Component {
         <Input name='name' placeholder='name' onChange={this.onChange}></Input>
         <br />
         <Input
-          name='numMatches'
+          name='num_matches'
           type='number'
           placeholder='number of matches'
           onChange={this.onChange}
         ></Input>
         <br />
         <Input
-          name='inputSet'
+          name='input_set'
           placeholder='input set'
           onChange={this.onChange}
         ></Input>
