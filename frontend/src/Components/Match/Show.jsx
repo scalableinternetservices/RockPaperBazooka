@@ -11,14 +11,14 @@ class Show extends React.Component {
 			player1moves: [],
 			player2moves: [],
             numMoves: 0,
-            input_set: ["fluff", "fluff", "invalid"],
+            input_set: [],
             selectedMove: "fluff" 
 		}
 	}
 
 	componentDidMount() {
-		this.getMatch();
-	}
+        this.getMatch();
+    }
 
 	getMatch = () => {
         Client.match(this.props.matchId)
@@ -31,7 +31,16 @@ class Show extends React.Component {
 					numMoves: Math.max(player1moves.length, player2moves.length),
 					player1moves,
                     player2moves
-				});
+                });
+                if(this.state.input_set.length == 0) {
+                    Client.gameConfiguration(response.data.game_configuration_id)
+                    .then(response => {
+                        this.setState({
+                            input_set: response.data.input_set.split(" ")
+                        })
+                        console.log(response)
+                    })
+                }
                 // this.getUserNames(user_ids)
             })
             .catch(console.log);
@@ -40,7 +49,6 @@ class Show extends React.Component {
 
     playMove = e => {
         e.preventDefault();
-        debugger;
         Client.play(this.props.matchId, this.props.userId, this.state.selectedMove)
     };
 

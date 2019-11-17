@@ -30,6 +30,9 @@ class Client {
   static gameConfigurations = () => {
     return axios.get("/game_configurations");
   };
+  static gameConfiguration = id => {
+    return axios.get(`/game_configurations/${id}`);
+  };
   static createGameConfigurations = data => {
     return axios.post("/game_configurations", data);
   };
