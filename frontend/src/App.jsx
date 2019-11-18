@@ -9,6 +9,7 @@ import Match from "./Components/Match/Show";
 import MatchTable from "./Components/MatchTable/MatchTable"
 import Messages from "./Components/Messages/Show";
 import MessageForm from "./Components/Messages/Form";
+import Header from "./Components/Header/Header";
 import {
   BrowserRouter as Router,
   Switch,
@@ -37,6 +38,7 @@ class App extends React.Component {
       return (
         <Router>
             <div className="App">
+                <Header />
                 <Switch>
                     <Route path="/configuration">
                         <GameConfiguration gameConfigurationId={1} />
