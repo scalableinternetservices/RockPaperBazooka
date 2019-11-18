@@ -1,4 +1,5 @@
 import React from 'react';
+import "./MatchTable.css"
 import Client from "../../Clients/Client";
 import { Button, Table } from 'reactstrap'
 import {
@@ -63,7 +64,7 @@ class MatchTable extends React.Component{
         for (const [index, value] of this.state.matches.entries()) {
             items.push(
                 <tr>
-                    <td scope="row"><Button type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
+                    <td scope="row"><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
                     <td>{this.state.users.get(value.user1_id)}</td>
                     <td>{this.state.users.get(value.user2_id)}</td>
                     <td>{value.game_configuration_id}</td>
@@ -74,6 +75,7 @@ class MatchTable extends React.Component{
         return (
             <div>
                 {this.state.redirect ? <Redirect to='/match' /> : null}
+                <h2>Matches</h2>
                 <Table>
                     <thead>
                         <tr>
