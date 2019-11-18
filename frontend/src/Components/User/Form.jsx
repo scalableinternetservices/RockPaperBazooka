@@ -1,4 +1,5 @@
 import React from "react";
+import "./Form.css";
 import { Form, Button, Input } from "reactstrap";
 import Client from "../../Clients/Client";
 import {
@@ -49,8 +50,9 @@ class UserForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="form">
           {this.state.loggedIn ? <Redirect to='/matches' /> : null}
+          <h2>Login</h2>
           <Form onSubmit={this.onSubmit}>
             <Input
               name="name"
