@@ -14,7 +14,8 @@ class Show extends React.Component {
 			player2moves: [],
             numMoves: 0,
             input_set: [],
-            selectedMove: ""
+            selectedMove: "",
+            usernames: []
 		}
 	}
 
@@ -35,6 +36,7 @@ class Show extends React.Component {
 					player1moves,
                     player2moves
                 });
+                this.getUsernames();
                 if(response.data.user2_id == null && this.props.userId !== response.data.user1_id){
                     let data = {
                         user2_id: this.props.userId,
@@ -59,6 +61,21 @@ class Show extends React.Component {
             })
             .catch(console.log);
         setTimeout(this.getMatch, 2000);
+    };
+
+    getUsernames = () => {
+        let usernames = [];
+        Client.getUser(this.state.matchData.user1_id)
+            .then(response => {
+                usernames.push(response.data.name)
+                Client.getUser(this.state.matchData.user2_id)
+                    .then(response => {
+                        usernames.push(response.data.name)
+                        this.setState({ usernames });
+                    })
+                    .catch(console.log);
+            })
+            .catch(console.log);
     };
 
     playMove = e => {
@@ -111,8 +128,8 @@ class Show extends React.Component {
                     <thead>
                         <tr>
                             <th>Move</th>
-                            <th>Player 1</th>
-                            <th>Player 2</th>
+                            <th>{this.state.usernames[0]}</th>
+                            <th>{this.state.usernames[1]}</th>
                         </tr>
                     </thead>
                     <tbody>
