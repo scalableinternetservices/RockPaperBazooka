@@ -92,7 +92,8 @@ class Show extends React.Component {
 
 		return (
 			<div>
-				<Form onSubmit={this.playMove}>
+				<Form style={{paddingBottom: '50px', margin: 'auto', width: '30%'}} onSubmit={this.playMove}>
+                    <h2>Play move</h2>
                     <Input
                         name="game_configuration_id"
                         type="select"
@@ -105,7 +106,8 @@ class Show extends React.Component {
                         Submit Move
                     </Button>
                 </Form>
-				<Table>
+                <h2>Previous Moves</h2>
+				<Table style={{marginBottom: '50px'}}>
                     <thead>
                         <tr>
                             <th>Move</th>
@@ -117,8 +119,10 @@ class Show extends React.Component {
                         {items}
                     </tbody>
                 </Table>
-                <Messages id={this.props.matchId} />
-                <MessageForm match_id={this.props.matchId} user_id={this.props.userId} />
+                <div style={{margin: 'auto', width: '50%'}}>
+                    <Messages id={this.props.matchId} />
+                    <MessageForm match_id={this.props.matchId} user_id={this.props.userId} />
+                </div>
 			</div>
 		);
 	}
