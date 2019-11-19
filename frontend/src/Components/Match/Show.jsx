@@ -35,7 +35,7 @@ class Show extends React.Component {
 					player1moves,
                     player2moves
                 });
-                if(response.data.user2_id == null && this.props.userId != response.data.user1_id){
+                if(response.data.user2_id == null && this.props.userId !== response.data.user1_id){
                     let data = {
                         user2_id: this.props.userId,
                     }
@@ -44,7 +44,7 @@ class Show extends React.Component {
                             console.log(response)
                         })
                 }
-                if(this.state.input_set.length == 0) {
+                if(this.state.input_set.length === 0) {
                     Client.gameConfiguration(response.data.game_configuration_id)
                     .then(response => {
                         let input_set = response.data.input_set.split(" ")

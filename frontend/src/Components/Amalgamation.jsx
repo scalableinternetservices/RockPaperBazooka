@@ -7,11 +7,6 @@ import {
 import MatchTable from "./MatchTable/MatchTable"
 
 class Amalgamation extends React.Component {
-    constructor(props){
-        super(props)
-
-    }
-
 
     render() {
         return (

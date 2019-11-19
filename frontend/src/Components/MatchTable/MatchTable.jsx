@@ -70,8 +70,8 @@ class MatchTable extends React.Component{
         const items = []
         for (const [index, value] of sortedMatches.entries()) {
             items.push(
-                <tr>
-                    <td scope="row"><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
+                <tr key={index}>
+                    <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
                     <td>{this.state.users.get(value.user1_id)}</td>
                     <td>{this.state.users.get(value.user2_id)}</td>
                     <td>{value.game_configuration_id}</td>
