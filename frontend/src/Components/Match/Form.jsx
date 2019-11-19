@@ -1,30 +1,48 @@
 import React from "react";
+import Client from "../../Clients/Client";
 import { Form, Button, Input } from "reactstrap";
 
 class MatchForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { game_configuration_id: 0 };
+    this.state = { 
+      game_configuration_id: 0,
+      configurations: []
+    };
   }
 
   onChange = e => {
-    if (e.target.type === "number") {
-      this.setState({ [e.target.name]: parseInt(e.target.value) });
-    } else {
-      this.setState({ [e.target.name]: e.target.value });
-    }
+    this.setState({ [e.target.name]: parseInt(e.target.value) });
   };
 
   onSubmit = e => {
     e.preventDefault();
     console.log(this.state);
+    let data = {
+      input_set_1: "",
+      input_set_2: "",
+      user1_id: this.props.userId,
+      game_configuration_id: this.state.game_configuration_id,
+    }
+    Client.createMatch(data)
+      .then(response => {
+        console.log(response)
+      })
+      .catch(console.log)
   };
 
+  componentDidMount() {
+    Client.gameConfigurations()
+      .then(response => {
+        console.log(response)
+        this.setState({
+          configurations: response.data
+        })
+      })
+      .catch(console.log);
+  }
+
   render() {
-    let configurations = [
-      { id: 0, name: "Rock Paper Scissors" },
-      { id: 1, name: "Rock Paper Bazooka" }
-    ];
 
     let makeOption = configuration => {
       return (
@@ -41,7 +59,7 @@ class MatchForm extends React.Component {
           type="select"
           onChange={this.onChange}
         >
-          {configurations.map(makeOption)}
+          {this.state.configurations.map(makeOption)}
         </Input>
         <br />
         <Button type="submit" color="primary">

@@ -6,7 +6,7 @@ import UserForm from "./Components/User/Form";
 import User from "./Components/User/Show";
 import MatchForm from "./Components/Match/Form";
 import Match from "./Components/Match/Show";
-import MatchTable from "./Components/MatchTable/MatchTable"
+import Amalgamation from "./Components/Amalgamation"
 import Messages from "./Components/Messages/Show";
 import MessageForm from "./Components/Messages/Form";
 import Header from "./Components/Header/Header";
@@ -55,13 +55,13 @@ class App extends React.Component {
                         <MessageForm match_id={1} user_id={1} /> <br />
                     </Route>
                     <Route path="/create">
-                        <MatchForm />
+                        <MatchForm userId={this.state.id} />
                     </Route>
                     <Route path="/match">
                         <Match matchId={this.state.currentMatchId} userId={this.state.id} />
                     </Route>
                     <Route path="/matches">
-                        <MatchTable updateCurrentMatch={this.updateCurrentMatch} />
+                        <Amalgamation updateCurrentMatch={this.updateCurrentMatch} />
                     </Route>
                     <Route path="/user">
                         <User user={{ name: this.state.name }} />
