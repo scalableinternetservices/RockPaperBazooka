@@ -18,6 +18,7 @@ class Show extends React.Component {
 
 	componentDidMount() {
         this.getMatch();
+        
     }
 
 	getMatch = () => {
@@ -32,6 +33,15 @@ class Show extends React.Component {
 					player1moves,
                     player2moves
                 });
+                if(response.data.user2_id == null && this.props.userId != response.data.user1_id){
+                    let data = {
+                        user2_id: this.props.userId,
+                    }
+                    Client.joinMatch(response.data.id, data)
+                        .then(response => {
+                            console.log(response)
+                        })
+                }
                 if(this.state.input_set.length == 0) {
                     Client.gameConfiguration(response.data.game_configuration_id)
                     .then(response => {

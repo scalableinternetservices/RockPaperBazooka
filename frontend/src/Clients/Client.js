@@ -27,6 +27,9 @@ class Client {
   static createMatch = data => {
     return axios.post("/matches", data);
   };
+  static joinMatch = (id, data) => {
+    return axios.patch(`/matches/${id}/join`, data)
+  }
   static gameConfiguration = (id) => {
     return axios.get(`/game_configurations/${id}`);
   };
