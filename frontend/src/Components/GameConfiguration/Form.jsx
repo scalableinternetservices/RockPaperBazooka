@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button, Input } from 'reactstrap';
+import { Redirect } from "react-router-dom";
 import Client from "../../Clients/Client";
 
 class ConfigForm extends React.Component {
@@ -8,7 +9,8 @@ class ConfigForm extends React.Component {
     this.state = {
         name: '',
         num_matches: 0,
-        input_set: ''
+        input_set: '',
+        redirect: false
     };
   }
 
@@ -25,33 +27,37 @@ class ConfigForm extends React.Component {
     console.log(this.state);
     Client.createGameConfigurations(this.state)
       .then(response => {
-          console.log(response);
+        this.setState({ redirect: true})
+        console.log(response);
       })
       .catch(console.log);
   };
 
   render() {
     return (
-      <Form onSubmit={this.onSubmit}>
-        <Input name='name' placeholder='name' onChange={this.onChange}></Input>
-        <br />
-        <Input
-          name='num_matches'
-          type='number'
-          placeholder='number of matches'
-          onChange={this.onChange}
-        ></Input>
-        <br />
-        <Input
-          name='input_set'
-          placeholder='input set'
-          onChange={this.onChange}
-        ></Input>
-        <br />
-        <Button type='submit' color='primary'>
-          Submit
-        </Button>
-      </Form>
+      <>
+        {this.state.redirect ? <Redirect to='/matches' /> : null}
+        <Form onSubmit={this.onSubmit}>
+          <Input name='name' placeholder='name' onChange={this.onChange}></Input>
+          <br />
+          <Input
+            name='num_matches'
+            type='number'
+            placeholder='number of matches'
+            onChange={this.onChange}
+          ></Input>
+          <br />
+          <Input
+            name='input_set'
+            placeholder='input set'
+            onChange={this.onChange}
+          ></Input>
+          <br />
+          <Button type='submit' color='primary'>
+            Submit
+          </Button>
+        </Form>
+      </>
     );
   }
 }
