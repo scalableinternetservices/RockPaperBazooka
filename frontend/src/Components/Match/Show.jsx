@@ -12,7 +12,7 @@ class Show extends React.Component {
 			player2moves: [],
             numMoves: 0,
             input_set: [],
-            selectedMove: "fluff" 
+            selectedMove: "" 
 		}
 	}
 
@@ -35,8 +35,10 @@ class Show extends React.Component {
                 if(this.state.input_set.length == 0) {
                     Client.gameConfiguration(response.data.game_configuration_id)
                     .then(response => {
+                        let input_set = response.data.input_set.split(" ")
                         this.setState({
-                            input_set: response.data.input_set.split(" ")
+                            input_set,
+                            selectedMove: input_set[0]
                         })
                         console.log(response)
                     })

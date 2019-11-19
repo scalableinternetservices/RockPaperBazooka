@@ -46,6 +46,8 @@ class App extends React.Component {
                 <Switch>
                     <Route path="/configuration">
                         <GameConfiguration gameConfigurationId={1} />
+                    </Route>
+                    <Route path="/config_creator">
                         <GameConfigurationForm /> <br />
                     </Route>
                     <Route path="/messages">

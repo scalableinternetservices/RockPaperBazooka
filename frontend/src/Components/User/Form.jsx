@@ -33,19 +33,15 @@ class UserForm extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     console.log(this.state);
-    Client.createUser(this.state)
+    Client.login(this.state.name)
       .then(response => {
-        this.props.updateName(this.state.name, this.response.data.id);
+        this.props.updateName(this.state.name, response.data.id);
         this.clearForm();
         this.setState({ loggedIn: true });
 
       })
       .catch(error => {
-        if (error.response.data.name[0] === 'has already been taken') {
-            this.props.updateName(this.state.name);
-            this.clearForm();
-            this.setState({ loggedIn: true });
-        }
+        alert("Shouldn't be possible to get there")
     });
   };
 

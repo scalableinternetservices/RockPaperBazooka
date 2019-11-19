@@ -15,6 +15,9 @@ class Client {
   static createUser = data => {
     return axios.post("/users", data);
   };
+  static login = name => {
+    return axios.post("/login", { name });
+  }
   static match = id => {
     return axios.get(`/matches/${id}`);
   };
