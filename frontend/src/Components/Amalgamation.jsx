@@ -1,5 +1,5 @@
 import React from 'react';
-// import ".MatchTable.css";
+import { Button } from 'reactstrap';
 import {
     Link
   } from "react-router-dom";
@@ -11,8 +11,13 @@ class Amalgamation extends React.Component {
     render() {
         return (
             <>
-                <Link to="/config_creator">Create a Configuration</Link>
-                <Link to="/create">Create a Match</Link>
+                <Button style={{marginBottom: '50px'}} type="submit" color="primary">
+                    <Link style={{color: 'white'}} to="/config_creator">Create a Configuration</Link>
+                </Button>
+                <br />
+                <Button style={{marginBottom: '50px'}} type="submit" color="primary">
+                    <Link style={{color: 'white'}} to="/create">Create a Match</Link>
+                </Button>
                 <MatchTable
                     updateCurrentMatch={this.props.updateCurrentMatch}
                 />
