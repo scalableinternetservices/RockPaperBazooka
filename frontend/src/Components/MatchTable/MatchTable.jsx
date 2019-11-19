@@ -64,7 +64,12 @@ class MatchTable extends React.Component{
 
     render() {
         const sortedMatches = this.state.matches.sort(function(a, b) {
-            const order = a.user2_id === null ? -1 : 1;
+            let order = 1;
+            if (a.user2_id === null && b.user2_id !== null) {
+                order = -1;
+            } else if (a.user2_id !== null && b.user2_id === null ) {
+                order = 1;
+            }
             return order;
         });
         const items = []
