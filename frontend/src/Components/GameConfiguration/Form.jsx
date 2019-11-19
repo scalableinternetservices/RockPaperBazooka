@@ -37,6 +37,7 @@ class ConfigForm extends React.Component {
     return (
       <>
         {this.state.redirect ? <Redirect to='/matches' /> : null}
+        <h2>Create Configuration</h2>
         <Form onSubmit={this.onSubmit}>
           <Input name='name' placeholder='name' onChange={this.onChange}></Input>
           <br />

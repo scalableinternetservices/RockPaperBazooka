@@ -6,7 +6,7 @@ import { Redirect } from "react-router-dom";
 class MatchForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       game_configuration_id: 0,
       configurations: [],
       redirect: false
@@ -58,7 +58,9 @@ class MatchForm extends React.Component {
     return (
       <>
         {this.state.redirect ? <Redirect to='/match' /> : null}
+        <h2>Create Match</h2>
         <Form onSubmit={this.onSubmit}>
+          <h4>Select a configuration:</h4>
           <Input
             name="game_configuration_id"
             type="select"
