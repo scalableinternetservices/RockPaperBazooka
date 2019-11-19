@@ -15,17 +15,29 @@ class Client {
   static createUser = data => {
     return axios.post("/users", data);
   };
+  static login = name => {
+    return axios.post("/login", { name });
+  }
+  static match = id => {
+    return axios.get(`/matches/${id}`);
+  };
   static matches = () => {
     return axios.get("/matches");
   };
   static createMatch = data => {
     return axios.post("/matches", data);
   };
+  static joinMatch = (id, data) => {
+    return axios.patch(`/matches/${id}/join`, data)
+  }
   static gameConfiguration = (id) => {
     return axios.get(`/game_configurations/${id}`);
   };
   static gameConfigurations = () => {
     return axios.get("/game_configurations");
+  };
+  static gameConfiguration = id => {
+    return axios.get(`/game_configurations/${id}`);
   };
   static createGameConfigurations = data => {
     return axios.post("/game_configurations", data);
@@ -36,6 +48,12 @@ class Client {
   static createMessage = (id, data) => {
     return axios.post(`/matches/${id}/messages`, data);
   };
+  static play = (id, player_id, game_input) => {
+    return axios.patch(`/matches/${id}/play`, {
+      player_id,
+      game_input
+    })
+  }
 }
 
 export default Client;
