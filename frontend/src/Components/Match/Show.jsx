@@ -1,5 +1,7 @@
 import React from 'react';
 import Client from "../../Clients/Client";
+import Messages from "../Messages/Show";
+import MessageForm from "../Messages/Form";
 import { Form, Button, Input } from "reactstrap";
 import { Table } from 'reactstrap'
 
@@ -12,13 +14,13 @@ class Show extends React.Component {
 			player2moves: [],
             numMoves: 0,
             input_set: [],
-            selectedMove: "" 
+            selectedMove: ""
 		}
 	}
 
 	componentDidMount() {
         this.getMatch();
-        
+
     }
 
 	getMatch = () => {
@@ -27,7 +29,7 @@ class Show extends React.Component {
                 console.log(response);
                 let player1moves = response.data.input_set_1.split(" ")
                 let player2moves = response.data.input_set_2.split(" ")
-                this.setState({ 
+                this.setState({
 					matchData: response.data,
 					numMoves: Math.max(player1moves.length, player2moves.length),
 					player1moves,
@@ -115,6 +117,8 @@ class Show extends React.Component {
                         {items}
                     </tbody>
                 </Table>
+                <Messages id={this.props.matchId} />
+                <MessageForm match_id={this.props.matchId} user_id={this.props.userId} />
 			</div>
 		);
 	}
