@@ -27,4 +27,18 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     patch user_url(@user), params: { user: { name: @user.name } }, as: :json
     assert_response 200
   end
+
+  test "should not create new user on login if user exists" do
+    assert_no_difference('User.count') do
+      post '/login', params: { user: { name: @user.name } }, as: :json
+    end
+    assert_response 200
+  end
+
+  test "should create new user on login if user does not exist" do
+    assert_difference('User.count') do
+      post '/login', params: { user: { name: "new guy" } }, as: :json
+    end
+    assert_response 200
+  end
 end
