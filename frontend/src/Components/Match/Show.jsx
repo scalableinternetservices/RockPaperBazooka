@@ -42,6 +42,7 @@ class Show extends React.Component {
                     let data = {
                         user2_id: this.props.userId,
                     }
+                    this.setState({ username2: this.props.userName });
                     Client.joinMatch(response.data.id, data)
                         .then(response => {
                             console.log(response)
