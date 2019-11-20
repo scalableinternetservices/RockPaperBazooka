@@ -12,7 +12,8 @@ class MatchTable extends React.Component{
             this.state = {
                 matches: [],
                 users: new Map(),
-                redirect: false
+                redirect: false,
+                configurations: new Map()
             }
     }
 
@@ -29,14 +30,17 @@ class MatchTable extends React.Component{
             .then(response => {
                 console.log(response);
                 const user_ids = []
+                const configuration_ids = [];
                 response.data.forEach(element => {
+                    configuration_ids.push(element.game_configuration_id);
                     user_ids.push(element.user1_id)
                     if(element.user2_id) {
                         user_ids.push(element.user2_id)
                     }
                 })
                 this.setState({ matches: response.data });
-                this.getUserNames(user_ids)
+                this.getUserNames(user_ids);
+                this.getConfigurations(configuration_ids);
             })
             .catch(console.log);
         this.timeoutId = setTimeout(this.getMatches, 2000);
@@ -56,6 +60,21 @@ class MatchTable extends React.Component{
             }
         });
       };
+
+    getConfigurations = (configuration_ids) => {
+        configuration_ids.forEach(configuration_id => {
+            if (!(this.state.configurations.get(configuration_id))) {
+                Client.gameConfiguration(configuration_id)
+                    .then(response => {
+                        const { configurations } = this.state;
+                        console.log(response);
+                        configurations.set(configuration_id, response.data.name);
+                        this.setState({ configurations });
+                    })
+                    .catch(console.log);
+            }
+        });
+    }
 
     onClick = (matchId) => {
         this.props.updateCurrentMatch(matchId);
@@ -79,7 +98,7 @@ class MatchTable extends React.Component{
                     <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
                     <td>{this.state.users.get(value.user1_id)}</td>
                     <td>{this.state.users.get(value.user2_id)}</td>
-                    <td>{value.game_configuration_id}</td>
+                    <td>{this.state.configurations.get(value.game_configuration_id)}</td>
                 </tr>
             )
         }
