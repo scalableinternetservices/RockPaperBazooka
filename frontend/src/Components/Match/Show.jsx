@@ -114,6 +114,7 @@ class Show extends React.Component {
 		return (
 			<div>
 				<Form style={{paddingBottom: '50px', margin: 'auto', width: '30%'}} onSubmit={this.playMove}>
+                    {this.state.username2 === "" ? <h2>Waiting for Player 2 to join...</h2> : null}
                     <h2>Play move</h2>
                     <Input
                         name="game_configuration_id"
