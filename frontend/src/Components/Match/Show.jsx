@@ -14,7 +14,9 @@ class Show extends React.Component {
 			player2moves: [],
             numMoves: 0,
             input_set: [],
-            selectedMove: ""
+            selectedMove: "",
+            username1: "",
+            username2: ""
 		}
 	}
 
@@ -35,10 +37,12 @@ class Show extends React.Component {
 					player1moves,
                     player2moves
                 });
+                this.getUsernames();
                 if(response.data.user2_id == null && this.props.userId !== response.data.user1_id){
                     let data = {
                         user2_id: this.props.userId,
                     }
+                    this.setState({ username2: this.props.userName });
                     Client.joinMatch(response.data.id, data)
                         .then(response => {
                             console.log(response)
@@ -59,6 +63,23 @@ class Show extends React.Component {
             })
             .catch(console.log);
         setTimeout(this.getMatch, 2000);
+    };
+
+    getUsernames = () => {
+        if (this.state.username1 === "") {
+            Client.getUser(this.state.matchData.user1_id)
+                .then(response => {
+                    this.setState({ username1: response.data.name })
+                })
+                .catch(console.log);
+        }
+        if (this.state.matchData.user2_id !== null && this.state.username2 === "") {
+            Client.getUser(this.state.matchData.user2_id)
+                .then(response => {
+                    this.setState({ username2: response.data.name });
+                })
+                .catch(console.log);
+        }
     };
 
     playMove = e => {
@@ -93,6 +114,7 @@ class Show extends React.Component {
 		return (
 			<div>
 				<Form style={{paddingBottom: '50px', margin: 'auto', width: '30%'}} onSubmit={this.playMove}>
+                    {this.state.username2 === "" ? <h2>Waiting for Player 2 to join...</h2> : null}
                     <h2>Play move</h2>
                     <Input
                         name="game_configuration_id"
@@ -111,8 +133,8 @@ class Show extends React.Component {
                     <thead>
                         <tr>
                             <th>Move</th>
-                            <th>Player 1</th>
-                            <th>Player 2</th>
+                            <th>{this.state.username1}</th>
+                            <th>{this.state.username2 === "" ? 'Player 2' : this.state.username2}</th>
                         </tr>
                     </thead>
                     <tbody>
