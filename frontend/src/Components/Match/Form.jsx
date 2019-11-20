@@ -50,7 +50,7 @@ class MatchForm extends React.Component {
     let makeOption = configuration => {
       return (
         <option value={configuration.id} key={configuration.id}>
-          {configuration.name}
+          {`${configuration.name} (${configuration.num_matches} matches)`}
         </option>
       );
     };

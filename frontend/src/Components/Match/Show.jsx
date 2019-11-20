@@ -16,7 +16,8 @@ class Show extends React.Component {
             input_set: [],
             selectedMove: "",
             username1: "",
-            username2: ""
+            username2: "",
+            gameConfiguration: {}
 		}
 	}
 
@@ -54,7 +55,8 @@ class Show extends React.Component {
                         let input_set = response.data.input_set.split(" ")
                         this.setState({
                             input_set,
-                            selectedMove: input_set[0]
+                            selectedMove: input_set[0],
+                            gameConfiguration: response.data
                         })
                         console.log(response)
                     })
@@ -115,6 +117,7 @@ class Show extends React.Component {
 			<div>
 				<Form style={{paddingBottom: '50px', margin: 'auto', width: '30%'}} onSubmit={this.playMove}>
                     {this.state.username2 === "" ? <h2>Waiting for Player 2 to join...</h2> : null}
+                    <h3>Configuration: {this.state.gameConfiguration.name} ({this.state.gameConfiguration.num_matches} matches)</h3>
                     <h2>Play move</h2>
                     <Input
                         name="game_configuration_id"
