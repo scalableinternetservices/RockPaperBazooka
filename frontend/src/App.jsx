@@ -1,14 +1,11 @@
 import React from "react";
 import "./App.css";
 import GameConfigurationForm from "./Components/GameConfiguration/Form";
-import GameConfiguration from "./Components/GameConfiguration/Show";
 import UserForm from "./Components/User/Form";
 import User from "./Components/User/Show";
 import MatchForm from "./Components/Match/Form";
 import Match from "./Components/Match/Show";
 import Amalgamation from "./Components/Amalgamation"
-import Messages from "./Components/Messages/Show";
-import MessageForm from "./Components/Messages/Form";
 import Header from "./Components/Header/Header";
 import {
   BrowserRouter as Router,
@@ -44,15 +41,8 @@ class App extends React.Component {
             <div className="App">
                 <Header />
                 <Switch>
-                    <Route path="/configuration">
-                        <GameConfiguration gameConfigurationId={1} />
-                    </Route>
                     <Route path="/config_creator">
                         <GameConfigurationForm /> <br />
-                    </Route>
-                    <Route path="/messages">
-                        <Messages id={1} />
-                        <MessageForm match_id={1} user_id={1} /> <br />
                     </Route>
                     <Route path="/create">
                         <MatchForm
