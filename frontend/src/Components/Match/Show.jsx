@@ -17,21 +17,22 @@ class Show extends React.Component {
             selectedMove: "",
             username1: "",
             username2: "",
-            gameConfiguration: {}
+            gameConfiguration: {},
+            finalScore: 0,
+            isGameOver: false
 		}
 	}
 
 	componentDidMount() {
         this.getMatch();
-
     }
 
 	getMatch = () => {
         Client.match(this.props.matchId)
             .then(response => {
                 console.log(response);
-                let player1moves = response.data.input_set_1.split(" ")
-                let player2moves = response.data.input_set_2.split(" ")
+                let player1moves = response.data.input_set_1.trim().split(" ")
+                let player2moves = response.data.input_set_2.trim().split(" ")
                 this.setState({
 					matchData: response.data,
 					numMoves: Math.max(player1moves.length, player2moves.length),
@@ -52,7 +53,7 @@ class Show extends React.Component {
                 if(this.state.input_set.length === 0) {
                     Client.gameConfiguration(response.data.game_configuration_id)
                     .then(response => {
-                        let input_set = response.data.input_set.split(" ")
+                        let input_set = response.data.input_set.trim().split(" ")
                         this.setState({
                             input_set,
                             selectedMove: input_set[0],
@@ -62,6 +63,13 @@ class Show extends React.Component {
                     })
                 }
                 // this.getUserNames(user_ids)
+                if (Client.isGameOver(this.state.player1moves, this.state.player2moves, this.state.gameConfiguration)) {
+                    const victor = Client.determineWinner(this.state.player1moves, this.state.player2moves, this.state.input_set);
+                    this.setState({
+                        finalScore: victor,
+                        isGameOver: true
+                    });
+                }
             })
             .catch(console.log);
         setTimeout(this.getMatch, 2000);
@@ -95,10 +103,10 @@ class Show extends React.Component {
 
 	render() {
 		const items = []
-        for (let i = this.state.numMoves-1; i > 0; i--) {
+        for (let i = this.state.numMoves-1; i >= 0; i--) {
             items.push(
                 <tr>
-                    <td>{i}</td>
+                    <td>{i + 1}</td>
                     <td>{this.state.player1moves[i]}</td>
                     <td>{this.state.player2moves[i]}</td>
                 </tr>
@@ -113,11 +121,21 @@ class Show extends React.Component {
             );
           };
 
+        const winBanner = [];
+        if (this.state.finalScore > 0) {
+            winBanner.push(<h1>{this.state.username1} Won!</h1>);
+        } else if (this.state.finalScore < 0) {
+            winBanner.push(<h1>{this.state.username2} Won!</h1>);
+        } else {
+            winBanner.push(<h1>Draw!</h1>);
+        }
+
 		return (
 			<div>
+                {this.state.isGameOver ? winBanner : null}
+                {this.state.username2 === "" ? <h2>Waiting for Player 2 to join...</h2> : null}
+                <h3>Configuration: {this.state.gameConfiguration.name} ({this.state.gameConfiguration.num_matches} matches)</h3>
 				<Form style={{paddingBottom: '50px', margin: 'auto', width: '30%'}} onSubmit={this.playMove}>
-                    {this.state.username2 === "" ? <h2>Waiting for Player 2 to join...</h2> : null}
-                    <h3>Configuration: {this.state.gameConfiguration.name} ({this.state.gameConfiguration.num_matches} matches)</h3>
                     <h2>Play move</h2>
                     <Input
                         name="game_configuration_id"

@@ -54,6 +54,23 @@ class Client {
       game_input
     })
   }
+  static determineWinner = (player1moves, player2moves, items) => {
+      let victor = 0;
+      player1moves.forEach((player1move, index) => {
+          const player2move = player2moves[index];
+          const player1moveIndex = items.indexOf(player1move);
+          const player2moveIndex = items.indexOf(player2move);
+          if ((player1moveIndex + 1)%items.length === player2moveIndex) {
+              victor--;
+          } else if ((player2moveIndex + 1)%items.length === player1moveIndex) {
+              victor++;
+          }
+      });
+      return victor;
+  }
+  static isGameOver = (player1moves, player2moves, game_configuration) => {
+      return (player1moves.length === game_configuration.num_matches && player2moves.length === game_configuration.num_matches);
+  }
 }
 
 export default Client;
