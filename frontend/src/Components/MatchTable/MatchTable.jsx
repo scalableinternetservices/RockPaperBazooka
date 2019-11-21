@@ -111,7 +111,7 @@ class MatchTable extends React.Component{
         return (
             <div>
                 {this.state.redirect ? <Redirect to='/match' /> : null}
-                <h2>Matches</h2>
+                <h2>Current Matches</h2>
                 <Table>
                     <thead>
                         <tr>
