@@ -68,7 +68,7 @@ class MatchTable extends React.Component{
                     .then(response => {
                         const { configurations } = this.state;
                         console.log(response);
-                        configurations.set(configuration_id, response.data.name);
+                        configurations.set(configuration_id, response.data);
                         this.setState({ configurations });
                     })
                     .catch(console.log);
@@ -93,14 +93,19 @@ class MatchTable extends React.Component{
         });
         const items = []
         for (const [index, value] of sortedMatches.entries()) {
-            items.push(
-                <tr key={index}>
-                    <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
-                    <td>{this.state.users.get(value.user1_id)}</td>
-                    <td>{this.state.users.get(value.user2_id)}</td>
-                    <td>{this.state.configurations.get(value.game_configuration_id)}</td>
-                </tr>
-            )
+            const player1moves = value.input_set_1 ? value.input_set_1.trim().split(" ") : [];
+            const player2moves = value.input_set_2 ? value.input_set_2.trim().split(" ") : [];
+            const configuration = this.state.configurations.get(value.game_configuration_id);
+            if (configuration && !Client.isGameOver(player1moves, player2moves, configuration)) {
+                items.push(
+                    <tr key={index}>
+                        <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
+                        <td>{this.state.users.get(value.user1_id)}</td>
+                        <td>{this.state.users.get(value.user2_id)}</td>
+                        <td>{configuration ? configuration.name : null}</td>
+                    </tr>
+                )
+            }
         }
 
         return (
