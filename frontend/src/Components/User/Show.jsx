@@ -5,8 +5,6 @@ function Show(props) {
   return (
     <div>
       <p>Name: {user.name}</p>
-      <a href='users/id/edit'>Edit</a> <br />
-      <a href='users/id/delete'>Delete</a>
     </div>
   );
 }
