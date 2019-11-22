@@ -54,7 +54,7 @@ class App extends React.Component {
                         <Match matchId={this.state.currentMatchId} userId={this.state.id} userName={this.state.name} />
                     </Route>
                     <Route path="/matches">
-                        <Amalgamation updateCurrentMatch={this.updateCurrentMatch} />
+                        <Amalgamation updateCurrentMatch={this.updateCurrentMatch} userId={this.state.id}/>
                     </Route>
                     <Route path="/user">
                         <User user={{ name: this.state.name }} />
