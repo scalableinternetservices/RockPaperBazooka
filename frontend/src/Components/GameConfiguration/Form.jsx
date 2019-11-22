@@ -38,6 +38,7 @@ class ConfigForm extends React.Component {
       <>
         {this.state.redirect ? <Redirect to='/matches' /> : null}
         <h2>Create Configuration</h2>
+        <p>Input set must be a list of the inputs that can be used for the game, separated by spaces. Ex: "rock paper scissors bazooka". Every input beats the input directly before it, and loses to the input directly after it (in a loop). In the example above, paper beats rock, scissors beats paper, bazooka beats scissors, and rock beats bazooka.</p>
         <Form onSubmit={this.onSubmit}>
           <Input name='name' placeholder='name' onChange={this.onChange}></Input>
           <br />

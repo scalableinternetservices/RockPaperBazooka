@@ -31,8 +31,8 @@ class Show extends React.Component {
         Client.match(this.props.matchId)
             .then(response => {
                 console.log(response);
-                let player1moves = response.data.input_set_1.trim().split(" ")
-                let player2moves = response.data.input_set_2.trim().split(" ")
+                let player1moves = response.data.input_set_1 ? response.data.input_set_1.trim().split(" ") : [];
+                let player2moves = response.data.input_set_2 ? response.data.input_set_2.trim().split(" ") : [];
                 this.setState({
 					matchData: response.data,
 					numMoves: Math.max(player1moves.length, player2moves.length),
