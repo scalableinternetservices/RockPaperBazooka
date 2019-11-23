@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/scalableinternetservices/RockPaperBazooka/static/css/main.4581143c.chunk.css",
+    "main.js": "/scalableinternetservices/RockPaperBazooka/static/js/main.695bae1f.chunk.js",
+    "main.js.map": "/scalableinternetservices/RockPaperBazooka/static/js/main.695bae1f.chunk.js.map",
+    "runtime-main.js": "/scalableinternetservices/RockPaperBazooka/static/js/runtime-main.c102cd29.js",
+    "runtime-main.js.map": "/scalableinternetservices/RockPaperBazooka/static/js/runtime-main.c102cd29.js.map",
+    "static/css/2.0624914a.chunk.css": "/scalableinternetservices/RockPaperBazooka/static/css/2.0624914a.chunk.css",
+    "static/js/2.0293d843.chunk.js": "/scalableinternetservices/RockPaperBazooka/static/js/2.0293d843.chunk.js",
+    "static/js/2.0293d843.chunk.js.map": "/scalableinternetservices/RockPaperBazooka/static/js/2.0293d843.chunk.js.map",
+    "index.html": "/scalableinternetservices/RockPaperBazooka/index.html",
+    "precache-manifest.46d632830d56f46a9f5be10aac3d0bb0.js": "/scalableinternetservices/RockPaperBazooka/precache-manifest.46d632830d56f46a9f5be10aac3d0bb0.js",
+    "service-worker.js": "/scalableinternetservices/RockPaperBazooka/service-worker.js",
+    "static/css/2.0624914a.chunk.css.map": "/scalableinternetservices/RockPaperBazooka/static/css/2.0624914a.chunk.css.map",
+    "static/css/main.4581143c.chunk.css.map": "/scalableinternetservices/RockPaperBazooka/static/css/main.4581143c.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c102cd29.js",
+    "static/css/2.0624914a.chunk.css",
+    "static/js/2.0293d843.chunk.js",
+    "static/css/main.4581143c.chunk.css",
+    "static/js/main.695bae1f.chunk.js"
+  ]
+}
