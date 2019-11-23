@@ -11,7 +11,8 @@ class UserForm extends React.Component {
     super(props);
     this.state = {
         name: "",
-        loggedIn: false
+        loggedIn: false,
+        url: "http://localhost:3000/"
     };
   }
 
@@ -30,6 +31,7 @@ class UserForm extends React.Component {
   onSubmit = e => {
     e.preventDefault();
     console.log(this.state);
+    localStorage.setItem("url", this.state.url);
     Client.login(this.state.name)
       .then(response => {
         this.props.updateName(this.state.name, response.data.id);
@@ -53,6 +55,13 @@ class UserForm extends React.Component {
               placeholder="name"
               onChange={this.onChange}
               value={this.state.name}
+            ></Input>
+            <br />
+            <Input
+              name="url"
+              placeholder="url"
+              onChange={this.onChange}
+              value={this.state.url}
             ></Input>
             <br />
             <Button type="submit" color="primary">
