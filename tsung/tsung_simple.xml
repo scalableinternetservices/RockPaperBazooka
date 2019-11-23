@@ -64,6 +64,22 @@
                     <http url="/login" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user2_name%%&quot;}"></http>
                </request>
 
+               <!-- Get all matches, users, game configs -->
+               <for from="1" to="2" incr="1" var="count">
+                    <request>
+                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                         <http url="/matches" version="1.1" method="GET" content_type="application/json"></http>
+                    </request>
+                    <request>
+                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                         <http url="/game_configurations" version="1.1" method="GET" content_type="application/json"></http>
+                    </request>
+                    <request>
+                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                         <http url="/users" version="1.1" method="GET" content_type="application/json"></http>
+                    </request>
+               </for>
+
                <!-- Create game configurations -->
                <request>
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
@@ -93,18 +109,23 @@
                     <dyn_variable name="match_id" re="Location: http://.*/matches/(.*)\r"></dyn_variable>
                     <http url="/matches" version="1.1" method="POST" content_type="application/json" contents="{&quot;user1_id&quot;: %%_user1_id%%, &quot;game_configuration_id&quot;: %%_game_configuration_id%%}"></http>
                </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
-               </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
-               </request>
-               <request>
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches" version="1.1" method="GET"></http>
-               </request>
+
+               <!-- Get match, messages, game configuration -->
+               <for from="1" to="2" incr="1" var="count">
+                    <request subst="true">
+                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                         <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
+                    </request>
+                    <request subst="true">
+                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                         <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
+                    </request>
+                    <request subst="true">
+                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                         <http url="/game_configurations/%%_game_configuration_id%%" version="1.1" method="GET" content_type="application/json"></http>
+                    </request>
+               </for>
+
 
                <!-- Join match -->
                <request subst="true">
