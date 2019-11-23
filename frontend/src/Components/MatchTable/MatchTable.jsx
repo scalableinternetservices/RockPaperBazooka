@@ -98,7 +98,6 @@ class MatchTable extends React.Component{
             const player2moves = value.input_set_2 ? value.input_set_2.trim().split(" ") : [];
             const configuration = this.state.configurations.get(value.game_configuration_id);
             if (configuration && !Client.isGameOver(player1moves, player2moves, configuration)) {
-                debugger;
                 if(value.user1_id === this.props.userId || value.user2_id === this.props.userId){
                     itemsMine.push(
                         <tr key={index}>

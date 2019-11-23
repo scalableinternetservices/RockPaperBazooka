@@ -13,9 +13,6 @@ class UserForm extends React.Component {
         name: "",
         loggedIn: false
     };
-    Client.users()
-      .then(console.log)
-      .catch(console.log);
   }
 
   onChange = e => {
