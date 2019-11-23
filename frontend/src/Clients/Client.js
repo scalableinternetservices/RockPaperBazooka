@@ -1,54 +1,69 @@
 import axios from "axios";
 
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 class Client {
   static users = () => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get("/users");
   };
   static getUser = id => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/users/${id}`);
   };
   static deleteUser = id => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.delete(`/users/${id}`);
   };
   static createUser = data => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.post("/users", data);
   };
   static login = name => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.post("/login", { name });
   }
   static match = id => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/matches/${id}`);
   };
   static matches = () => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get("/matches");
   };
   static createMatch = data => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.post("/matches", data);
   };
   static joinMatch = (id, data) => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.patch(`/matches/${id}/join`, data)
   }
   static gameConfiguration = (id) => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/game_configurations/${id}`);
   };
   static gameConfigurations = () => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get("/game_configurations");
   };
   static gameConfiguration = id => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/game_configurations/${id}`);
   };
   static createGameConfigurations = data => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.post("/game_configurations", data);
   };
   static messages = id => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/matches/${id}/messages`);
   };
   static createMessage = (id, data) => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.post(`/matches/${id}/messages`, data);
   };
   static play = (id, player_id, game_input) => {
+      axios.defaults.baseURL = localStorage.getItem("url");
     return axios.patch(`/matches/${id}/play`, {
       player_id,
       game_input
