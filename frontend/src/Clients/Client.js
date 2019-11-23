@@ -7,13 +7,19 @@ class Client {
     return axios.get("/users");
   };
   static getUser = id => {
-    return axios.get(`/users/{id}`);
+    return axios.get(`/users/${id}`);
   };
   static deleteUser = id => {
-    return axios.delete(`/users/{id}`);
+    return axios.delete(`/users/${id}`);
   };
   static createUser = data => {
     return axios.post("/users", data);
+  };
+  static login = name => {
+    return axios.post("/login", { name });
+  }
+  static match = id => {
+    return axios.get(`/matches/${id}`);
   };
   static matches = () => {
     return axios.get("/matches");
@@ -21,12 +27,50 @@ class Client {
   static createMatch = data => {
     return axios.post("/matches", data);
   };
+  static joinMatch = (id, data) => {
+    return axios.patch(`/matches/${id}/join`, data)
+  }
+  static gameConfiguration = (id) => {
+    return axios.get(`/game_configurations/${id}`);
+  };
   static gameConfigurations = () => {
     return axios.get("/game_configurations");
+  };
+  static gameConfiguration = id => {
+    return axios.get(`/game_configurations/${id}`);
   };
   static createGameConfigurations = data => {
     return axios.post("/game_configurations", data);
   };
+  static messages = id => {
+    return axios.get(`/matches/${id}/messages`);
+  };
+  static createMessage = (id, data) => {
+    return axios.post(`/matches/${id}/messages`, data);
+  };
+  static play = (id, player_id, game_input) => {
+    return axios.patch(`/matches/${id}/play`, {
+      player_id,
+      game_input
+    })
+  }
+  static determineWinner = (player1moves, player2moves, items) => {
+      let victor = 0;
+      player1moves.forEach((player1move, index) => {
+          const player2move = player2moves[index];
+          const player1moveIndex = items.indexOf(player1move);
+          const player2moveIndex = items.indexOf(player2move);
+          if ((player1moveIndex + 1)%items.length === player2moveIndex) {
+              victor--;
+          } else if ((player2moveIndex + 1)%items.length === player1moveIndex) {
+              victor++;
+          }
+      });
+      return victor;
+  }
+  static isGameOver = (player1moves, player2moves, game_configuration) => {
+      return (player1moves.length === game_configuration.num_matches && player2moves.length === game_configuration.num_matches);
+  }
 }
 
 export default Client;
