@@ -3,28 +3,22 @@
 
 ]>
 <tsung loglevel="notice">
-
      <!-- Client side setup -->
      <clients>
           <client host="localhost" use_controller_vm="true" maxusers="15000" />
      </clients>
-
      <!-- Server side setup -->
      <servers>
           <server host="scott.2iscm2mqr5.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
      </servers>
-
-
      <load>
           <arrivalphase phase="1" duration="10" unit="second">
                <users arrivalrate="1" unit="second"></users>
           </arrivalphase>
      </load>
-
      <options>
           <!-- Set connection timeout to 2 seconds -->
           <option name="global_ack_timeout" value="2000"></option>
-
           <option type="ts_http" name="user_agent">
                <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
           </option>
@@ -41,16 +35,36 @@
                <setdynvars sourcetype="random_string" length="10">
                     <var name="input_set_var3" />
                </setdynvars>
+
+               <!-- Login both users -->
+               <request>
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/login" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="POST" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
+               </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <dyn_variable name="user1_id" jsonpath="id"></dyn_variable>
                     <http url="/login" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user1_name%%&quot;}"></http>
+               </request>
+               <request>
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/login" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="POST" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
                </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <dyn_variable name="user2_id" jsonpath="id"></dyn_variable>
                     <http url="/login" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user2_name%%&quot;}"></http>
                </request>
+
+               <!-- Create game configurations -->
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <dyn_variable name="game_configuration_id" re="Location: http://.*/game_configurations/(.*)\r"></dyn_variable>
