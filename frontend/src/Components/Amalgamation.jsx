@@ -19,7 +19,7 @@ class Amalgamation extends React.Component {
                     <Link style={{color: 'white'}} to="/create">Create a Match</Link>
                 </Button>
                 <MatchTable
-                    updateCurrentMatch={this.props.updateCurrentMatch}
+                    updateCurrentMatch={this.props.updateCurrentMatch} userId={this.props.userId}
                 />
             </>
         )

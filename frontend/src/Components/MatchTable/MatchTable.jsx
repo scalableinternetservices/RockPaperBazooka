@@ -91,27 +91,39 @@ class MatchTable extends React.Component{
             }
             return order;
         });
-        const items = []
+        const itemsMine = []
+        const itemsOther = []
         for (const [index, value] of sortedMatches.entries()) {
             const player1moves = value.input_set_1 ? value.input_set_1.trim().split(" ") : [];
             const player2moves = value.input_set_2 ? value.input_set_2.trim().split(" ") : [];
             const configuration = this.state.configurations.get(value.game_configuration_id);
             if (configuration && !Client.isGameOver(player1moves, player2moves, configuration)) {
-                items.push(
-                    <tr key={index}>
-                        <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
-                        <td>{this.state.users.get(value.user1_id)}</td>
-                        <td>{this.state.users.get(value.user2_id)}</td>
-                        <td>{configuration ? configuration.name : null}</td>
-                    </tr>
-                )
+                if(value.user1_id === this.props.userId || value.user2_id === this.props.userId){
+                    itemsMine.push(
+                        <tr key={index}>
+                            <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>Resume</Button></td>
+                            <td>{this.state.users.get(value.user1_id)}</td>
+                            <td>{this.state.users.get(value.user2_id)}</td>
+                            <td>{configuration ? configuration.name : null}</td>
+                        </tr>
+                    )
+                } else {
+                    itemsOther.push(
+                        <tr key={index}>
+                            <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
+                            <td>{this.state.users.get(value.user1_id)}</td>
+                            <td>{this.state.users.get(value.user2_id)}</td>
+                            <td>{configuration ? configuration.name : null}</td>
+                        </tr>
+                    )
+                }
             }
         }
 
         return (
             <div>
                 {this.state.redirect ? <Redirect to='/match' /> : null}
-                <h2>Current Matches</h2>
+                <h2>Your Current Matches</h2>
                 <Table>
                     <thead>
                         <tr>
@@ -122,7 +134,21 @@ class MatchTable extends React.Component{
                         </tr>
                     </thead>
                     <tbody>
-                        {items}
+                        {itemsMine}
+                    </tbody>
+                </Table>
+                <h2>Other Current Matches</h2>
+                <Table>
+                    <thead>
+                        <tr>
+                            <th>Join / Spectate</th>
+                            <th>Player 1</th>
+                            <th>Player 2</th>
+                            <th>Configuration</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {itemsOther}
                     </tbody>
                 </Table>
             </div>
