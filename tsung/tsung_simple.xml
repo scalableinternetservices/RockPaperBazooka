@@ -65,10 +65,28 @@
                </request>
 
                <!-- Create game configurations -->
+               <request>
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/game_configurations" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="POST" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
+               </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <dyn_variable name="game_configuration_id" re="Location: http://.*/game_configurations/(.*)\r"></dyn_variable>
                     <http url="/game_configurations" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user1_name%%&quot;, &quot;num_matches&quot;: 1, &quot;input_set&quot;: &quot;%%_user1_name%% %%_user2_name%% %%_input_set_var3%%&quot;}"></http>
+               </request>
+
+               <!-- Create Match -->
+               <request>
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/matches" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="POST" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
                </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
@@ -87,6 +105,16 @@
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <http url="/matches" version="1.1" method="GET"></http>
                </request>
+
+               <!-- Join match -->
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/matches/%%_match_id%%/join" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="PATCH" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
+               </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <http url="/matches/%%_match_id%%/join" version="1.1" method="PATCH" content_type="application/json" contents="{&quot;user2_id&quot;: %%_user2_id%%}"></http>
@@ -101,15 +129,41 @@
                </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/matches/%%_match_id%%/play" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="PATCH" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
+               </request>
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <http url="/matches/%%_match_id%%/play" version="1.1" method="PATCH" content_type="application/json" contents="{&quot;player_id&quot;: %%_user1_id%%, &quot;game_input&quot;: &quot;%%_user1_name%%&quot;}"></http>
                </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
                </request>
+
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="POST" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
+               </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="POST" content_type="application/json" contents="{&quot;user_id&quot;: %%_user1_id%%, &quot;content&quot;: &quot;Testing&quot;, &quot;match_id&quot;: %%_match_id%%}"></http>
+               </request>
+
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/matches/%%_match_id%%/play" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="PATCH" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
                </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
@@ -118,6 +172,15 @@
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
+               </request>
+
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="OPTIONS">
+                         <http_header name="Origin" value="tsung.test" />
+                         <http_header name="Access-Control-Request-Method" value="POST" />
+                         <http_header name="Access-Control-Request-Headers" value="content-type" />
+                    </http>
                </request>
                <request subst="true">
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
