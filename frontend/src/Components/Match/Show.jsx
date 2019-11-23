@@ -19,7 +19,8 @@ class Show extends React.Component {
             username2: "",
             gameConfiguration: {},
             finalScore: 0,
-            isGameOver: false
+            isGameOver: false,
+            lastPlayedMove: ""
 		}
 	}
 
@@ -35,7 +36,7 @@ class Show extends React.Component {
                 let player2moves = response.data.input_set_2 ? response.data.input_set_2.trim().split(" ") : [];
                 this.setState({
 					matchData: response.data,
-					numMoves: Math.max(player1moves.length, player2moves.length),
+					numMoves: Math.min(player1moves.length, player2moves.length),
 					player1moves,
                     player2moves
                 });
@@ -95,6 +96,12 @@ class Show extends React.Component {
     playMove = e => {
         e.preventDefault();
         Client.play(this.props.matchId, this.props.userId, this.state.selectedMove)
+            .then(response => {
+                this.setState({ lastPlayedMove: this.state.selectedMove });
+            })
+            .catch(error => {
+                alert(error.response.data.error);
+            });
     };
 
     onChange = e => {
@@ -149,6 +156,7 @@ class Show extends React.Component {
                         Submit Move
                     </Button>
                 </Form>
+                <h4>Last submitted move: {this.state.lastPlayedMove}</h4>
                 <h2>Previous Moves</h2>
 				<Table style={{marginBottom: '50px'}}>
                     <thead>
