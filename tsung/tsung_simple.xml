@@ -3,22 +3,28 @@
 
 ]>
 <tsung loglevel="notice">
+
      <!-- Client side setup -->
      <clients>
           <client host="localhost" use_controller_vm="true" maxusers="15000" />
      </clients>
+
      <!-- Server side setup -->
      <servers>
-          <server host="scott.2iscm2mqr5.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
+          <server host="demo.2iscm2mqr5.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
      </servers>
+
+
      <load>
           <arrivalphase phase="1" duration="10" unit="second">
                <users arrivalrate="1" unit="second"></users>
           </arrivalphase>
      </load>
+
      <options>
           <!-- Set connection timeout to 2 seconds -->
           <option name="global_ack_timeout" value="2000"></option>
+
           <option type="ts_http" name="user_agent">
                <user_agent probability="100">Mozilla/5.0 (Windows; U; Windows NT 5.2; fr-FR; rv:1.7.8) Gecko/20050511 Firefox/1.0.4</user_agent>
           </option>
@@ -35,207 +41,92 @@
                <setdynvars sourcetype="random_string" length="10">
                     <var name="input_set_var3" />
                </setdynvars>
-
-               <!-- Login both users -->
-               <request>
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/login" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="POST" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <dyn_variable name="user1_id" re="Location: http://.*/users/(.*)\r"></dyn_variable>
+                    <http url="/users" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user1_name%%&quot;}"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <dyn_variable name="user1_id" jsonpath="id"></dyn_variable>
-                    <http url="/login" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user1_name%%&quot;}"></http>
-               </request>
-               <request>
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/login" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="POST" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <dyn_variable name="user2_id" re="Location: http://.*/users/(.*)\r"></dyn_variable>
+                    <http url="/users" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user2_name%%&quot;}"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <dyn_variable name="user2_id" jsonpath="id"></dyn_variable>
-                    <http url="/login" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user2_name%%&quot;}"></http>
-               </request>
-
-               <!-- Get all matches, users, game configs -->
-               <for from="1" to="2" incr="1" var="count">
-                    <request>
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/matches" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
-                    <request>
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/game_configurations" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
-                    <request>
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/users" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
-               </for>
-
-               <!-- Create game configurations -->
-               <request>
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/game_configurations" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="POST" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
-               </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <dyn_variable name="game_configuration_id" re="Location: http://.*/game_configurations/(.*)\r"></dyn_variable>
                     <http url="/game_configurations" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user1_name%%&quot;, &quot;num_matches&quot;: 1, &quot;input_set&quot;: &quot;%%_user1_name%% %%_user2_name%% %%_input_set_var3%%&quot;}"></http>
                </request>
-
-               <!-- Create Match -->
-               <request>
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="POST" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
-               </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <dyn_variable name="match_id" re="Location: http://.*/matches/(.*)\r"></dyn_variable>
                     <http url="/matches" version="1.1" method="POST" content_type="application/json" contents="{&quot;user1_id&quot;: %%_user1_id%%, &quot;game_configuration_id&quot;: %%_game_configuration_id%%}"></http>
                </request>
-
-               <!-- Join match -->
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/join" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="PATCH" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
+               </request>
+               <request>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches" version="1.1" method="GET"></http>
+               </request>
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/join" version="1.1" method="PATCH" content_type="application/json" contents="{&quot;user2_id&quot;: %%_user2_id%%}"></http>
                </request>
-
-               <!-- Get match, messages, game configuration, and users -->
-               <for from="1" to="2" incr="1" var="count">
-                    <request subst="true">
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
-                    </request>
-                    <request subst="true">
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
-                    </request>
-                    <request subst="true">
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/game_configurations/%%_game_configuration_id%%" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
-               </for>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/users/%%_user1_id%%" version="1.1" method="GET" content_type="application/json"></http>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/users/%%_user2_id%%" version="1.1" method="GET" content_type="application/json"></http>
-               </request>
-
-
-               <!-- Both players play -->
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/play" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="PATCH" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/play" version="1.1" method="PATCH" content_type="application/json" contents="{&quot;player_id&quot;: %%_user1_id%%, &quot;game_input&quot;: &quot;%%_user1_name%%&quot;}"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/play" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="PATCH" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
-               </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/play" version="1.1" method="PATCH" content_type="application/json" contents="{&quot;player_id&quot;: %%_user2_id%%, &quot;game_input&quot;: &quot;%%_user2_name%%&quot;}"></http>
-               </request>
-
-               <!-- Both players get the match again after playing -->
-               <for from="1" to="2" incr="1" var="count">
-                    <request subst="true">
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
-                    </request>
-               </for>
-
-               <!-- Both players message and retrieve messages -->
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="POST" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
-               </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="POST" content_type="application/json" contents="{&quot;user_id&quot;: %%_user1_id%%, &quot;content&quot;: &quot;Testing&quot;, &quot;match_id&quot;: %%_match_id%%}"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%/play" version="1.1" method="PATCH" content_type="application/json" contents="{&quot;player_id&quot;: %%_user2_id%%, &quot;game_input&quot;: &quot;%%_user2_name%%&quot;}"></http>
+               </request>
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/matches/%%_match_id%%/messages" version="1.1" method="OPTIONS">
-                         <http_header name="Origin" value="tsung.test" />
-                         <http_header name="Access-Control-Request-Method" value="POST" />
-                         <http_header name="Access-Control-Request-Headers" value="content-type" />
-                    </http>
-               </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="POST" content_type="application/json" contents="{&quot;user_id&quot;: %%_user2_id%%, &quot;content&quot;: &quot;Testing&quot;, &quot;match_id&quot;: %%_match_id%%}"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/matches/%%_match_id%%/messages" version="1.1" method="GET"></http>
                </request>
-
-               <!-- Both players get the match again after the other played playing -->
-               <for from="1" to="2" incr="1" var="count">
-                    <request subst="true">
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
-                    </request>
-               </for>
-
-               <!-- Players sent to their profile after the match -->
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
+               </request>
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
+                    <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
+               </request>
+               <request subst="true">
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/users/%%_user1_id%%" version="1.1" method="GET"></http>
                </request>
                <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                    <match do="abort" when="nomatch">HTTP/1.1 (200( )?OK|201( )?Created)</match>
                     <http url="/users/%%_user2_id%%" version="1.1" method="GET"></http>
                </request>
           </session>
