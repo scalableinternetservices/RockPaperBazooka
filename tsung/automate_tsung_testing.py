@@ -48,7 +48,11 @@ def launch_and_test(db_instance, app_instance, num_instance, instance_name):
 def launch_eb_instance(db_instance, app_instance, num_instance, instance_name):
     print("Launching EB instance: %s" % instance_name)
     os.chdir("/home/TheOtherSock/RockPaperBazooka/backend")
-    cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single %s -i %s --scale %d" % (db_instance, instance_name, app_instance, num_instance)
+    cmd = ""
+    if num_instance == 1:
+        cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single %s -i %s" % (db_instance, instance_name, app_instance)
+    else:
+        cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET %s -i %s --scale %d" % (db_instance, instance_name, app_instance, num_instance)
     subprocess.call(cmd, shell=True)
     print("Launched EB instance: %s" % instance_name)
     sleep(20)
