@@ -7,47 +7,48 @@ import requests
 
 app_instances = ['t3.micro', 't3.medium', 't3.xlarge', 'r5.large', 'r5.4xlarge', 'i3.large']
 db_instances = ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large', 'db.r5.4xlarge']
-exclude_instances = {
-    't3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge']
-}
+num_instances = [1, 2, 4]
+exclude_instances = {} #{'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge']}
 
 tsung_file_lock = Lock()
 used_threads_lock = Lock()
 used_threads = 0
 
-def launch_instances(db_instances, app_instances):
+def launch_instances(db_instances, app_instances, num_instances):
     global used_threads, used_threads_lock, exclude_instances
-    max_threads = 1
+    max_threads = 3
     for app_instance in app_instances:
         for db_instance in db_instances:
-            if (app_instance not in exclude_instances) or (db_instance not in exclude_instances[app_instance]):
-                while True:
-                    if used_threads < max_threads:
-                        instance_name = "%s%s" % (remove_special_chars(app_instance), remove_special_chars(db_instance))
-                        t = Thread(target=launch_and_test, args=(db_instance, app_instance, instance_name))
-                        t.start()
-                        used_threads_lock.acquire()
-                        used_threads += 1
-                        used_threads_lock.release()
-                        break
-                    sleep(2)
+            for num_instance in num_instances:
+                if (app_instance not in exclude_instances) or (db_instance not in exclude_instances[app_instance]):
+                    while True:
+                        if used_threads < max_threads:
+                            instance_name = "app%d%s%s" % (num_instance, remove_special_chars(app_instance), remove_special_chars(db_instance))
+                            t = Thread(target=launch_and_test, args=(db_instance, app_instance, num_instance, instance_name))
+                            t.start()
+                            used_threads_lock.acquire()
+                            used_threads += 1
+                            used_threads_lock.release()
+                            break
+                        sleep(2)
 
-def launch_and_test(db_instance, app_instance, instance_name):
+def launch_and_test(db_instance, app_instance, num_instance, instance_name):
     global used_threads, used_threads_lock
-    launch_eb_instance(db_instance, app_instance, instance_name)
+    launch_eb_instance(db_instance, app_instance, num_instance, instance_name)
     if eb_instance_deployed(instance_name):
         tsung_instance_ip = launch_tsung_instance(instance_name)
         run_tsung_test(tsung_instance_ip, instance_name)
         save_tsung_results(tsung_instance_ip, instance_name)
-        terminate_eb_instance(instance_name)
     used_threads_lock.acquire()
     used_threads -= 1
     used_threads_lock.release()
+    if eb_instance_deployed(instance_name):
+        terminate_eb_instance(instance_name)
 
-def launch_eb_instance(db_instance, app_instance, instance_name):
+def launch_eb_instance(db_instance, app_instance, num_instance, instance_name):
     print("Launching EB instance: %s" % instance_name)
     os.chdir("/home/TheOtherSock/RockPaperBazooka/backend")
-    cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single %s -i %s" % (db_instance, instance_name, app_instance)
+    cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single %s -i %s --scale %d" % (db_instance, instance_name, app_instance, num_instance)
     subprocess.call(cmd, shell=True)
     print("Launched EB instance: %s" % instance_name)
     sleep(20)
@@ -69,7 +70,7 @@ def launch_tsung_instance(instance_name):
 def run_tsung_test(tsung_instance_ip, instance_name):
     def replace_tsung_url(instance_name):
         global tsung_file_lock
-        server_url = "<server host='%s.2iscm2mqr5.us-west-2.elasticbeanstalk.com' port='80' type='tcp'></server>\n" % instance_name
+        server_url = "          <server host='%s.2iscm2mqr5.us-west-2.elasticbeanstalk.com' port='80' type='tcp'></server>\n" % instance_name
         tsung_file_lock.acquire()
         with open('/home/TheOtherSock/RockPaperBazooka/tsung/tsung_simple.xml', 'r') as file:
             lines = file.readlines()
@@ -117,5 +118,5 @@ def remove_special_chars(text):
     return re.sub('[^A-Za-z0-9]+', '', text)
 
 if __name__ == "__main__":
-    launch_instances(db_instances, app_instances)
+    launch_instances(db_instances, app_instances, num_instances)
 
