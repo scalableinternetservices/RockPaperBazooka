@@ -8,7 +8,7 @@ import requests
 app_instances = ['t3.micro', 't3.medium', 't3.xlarge', 'r5.large', 'r5.4xlarge', 'i3.large']
 db_instances = ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large', 'db.r5.4xlarge']
 num_instances = [1, 2, 4]
-exclude_instances = {'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge, db.r5.large']}
+exclude_instances = {}#{'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large']}
 
 tsung_file_lock = Lock()
 used_threads_lock = Lock()
@@ -16,7 +16,7 @@ used_threads = 0
 
 def launch_instances(db_instances, app_instances, num_instances):
     global used_threads, used_threads_lock, exclude_instances
-    max_threads = 6
+    max_threads = 15
     for app_instance in app_instances:
         for db_instance in db_instances:
             for num_instance in num_instances:
