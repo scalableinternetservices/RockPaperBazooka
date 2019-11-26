@@ -8,7 +8,7 @@ import requests
 app_instances = ['t3.micro', 't3.medium', 't3.xlarge', 'r5.large', 'r5.4xlarge', 'i3.large']
 db_instances = ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large', 'db.r5.4xlarge']
 num_instances = [1, 2, 4]
-exclude_instances = {} #{'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge']}
+exclude_instances = {'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge']}
 
 tsung_file_lock = Lock()
 used_threads_lock = Lock()
@@ -39,20 +39,19 @@ def launch_and_test(db_instance, app_instance, num_instance, instance_name):
         tsung_instance_ip = launch_tsung_instance(instance_name)
         run_tsung_test(tsung_instance_ip, instance_name)
         save_tsung_results(tsung_instance_ip, instance_name)
+        terminate_eb_instance(instance_name)
     used_threads_lock.acquire()
     used_threads -= 1
     used_threads_lock.release()
-    if eb_instance_deployed(instance_name):
-        terminate_eb_instance(instance_name)
 
 def launch_eb_instance(db_instance, app_instance, num_instance, instance_name):
     print("Launching EB instance: %s" % instance_name)
     os.chdir("/home/TheOtherSock/RockPaperBazooka/backend")
     cmd = ""
     if num_instance == 1:
-        cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single %s -i %s" % (db_instance, instance_name, app_instance)
+        cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single %s -i %s --timeout 30" % (db_instance, instance_name, app_instance)
     else:
-        cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET %s -i %s --scale %d" % (db_instance, instance_name, app_instance, num_instance)
+        cmd = "eb create -db.engine postgres -db.i %s --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET %s -i %s --scale %d --timeout 30" % (db_instance, instance_name, app_instance, num_instance)
     subprocess.call(cmd, shell=True)
     print("Launched EB instance: %s" % instance_name)
     sleep(20)
@@ -107,7 +106,7 @@ def save_tsung_results(tsung_instance_ip, instance_name):
 def terminate_eb_instance(instance_name):
     print("Deleting eb instance: %s" % instance_name)
     os.chdir("/home/TheOtherSock/RockPaperBazooka/backend")
-    cmd = "eb terminate %s --force" % instance_name
+    cmd = "eb terminate %s --timeout 50 --force" % instance_name
     subprocess.call(cmd, shell=True)
     print("Deleted eb instance: %s" % instance_name)
 
