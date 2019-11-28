@@ -42,3 +42,17 @@ Make sure you have `yarn` installed.
 ### How to run it:
 
 - `yarn start`
+
+## AWS
+
+### Creating your environment for small tests:
+
+From the `backend/` directory of the app on the AWS jumpbox:
+
+`eb create -db.engine postgres -db.i db.t3.micro --database.password rockpaper -db.user u --envvars SECRET_KEY_BASE=RANDOM_SECRET --single ENVIRONMENTNAME -i t3.micro`
+
+### Running Tsung Tests:
+
+From anywhere on the jumpbox:
+
+`launch_tsung.sh`
