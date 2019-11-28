@@ -64,20 +64,22 @@
                     <http url="/login" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user2_name%%&quot;}"></http>
                </request>
 
-               <!-- Get all matches, users, game configs -->
-               <for from="1" to="2" incr="1" var="count">
-                    <request>
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/matches" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
-                    <request>
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/game_configurations" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
-                    <request>
-                         <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                         <http url="/users" version="1.1" method="GET" content_type="application/json"></http>
-                    </request>
+               <!-- Get top 30 matches, users, game configs -->
+               <for from="1" to="2" incr="1" var="user">
+                    <for from="1" to="3" incr="1" var="count">
+                         <request subst="true">
+                              <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                              <http url="/matches?page=%%_count%%" version="1.1" method="GET" content_type="application/json"></http>
+                         </request>
+                         <request>
+                              <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                              <http url="/game_configurations?page=%%_count%%" version="1.1" method="GET" content_type="application/json"></http>
+                         </request>
+                         <request>
+                              <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
+                              <http url="/users?page=%%_count%%" version="1.1" method="GET" content_type="application/json"></http>
+                         </request>
+                    </for>
                </for>
 
                <!-- Create game configurations -->
