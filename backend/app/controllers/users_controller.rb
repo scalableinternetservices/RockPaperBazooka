@@ -38,6 +38,10 @@ class UsersController < ApplicationController
     @user.destroy
   end
 
+  def drop
+    User.delete_all
+  end
+
   def login
     @user = User.find_or_create_by(name: params[:user][:name])
     render json: @user
