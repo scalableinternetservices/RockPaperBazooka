@@ -12,8 +12,50 @@
           <server host="scott.2iscm2mqr5.us-west-2.elasticbeanstalk.com" port="80" type="tcp"></server>
      </servers>
      <load>
-          <arrivalphase phase="1" duration="10" unit="second">
+          <arrivalphase phase="1" duration="60" unit="second" wait_all_sessions_end="true">
                <users arrivalrate="1" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="2" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="2" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="3" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="4" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="4" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="6" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="5" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="8" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="6" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="11" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="7" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="16" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="8" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="23" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="9" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="32" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="10" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="45" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="11" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="64" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="12" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="90" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="13" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="128" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="14" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="181" unit="second"></users>
+          </arrivalphase>
+          <arrivalphase phase="15" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="256" unit="second"></users>
           </arrivalphase>
      </load>
      <options>
