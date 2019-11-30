@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   def index
     @users = User.all
 
-    render json: @users
+    paginate json: @users, per_page: 10
   end
 
   # GET /users/1

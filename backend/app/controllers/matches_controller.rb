@@ -5,12 +5,12 @@ class MatchesController < ApplicationController
   def index
     @matches = Match.all
 
-    render json: @matches
+    paginate json: @matches, per_page: 10
   end
 
   # GET /matches/1
   def show
-    render json: @match
+    render json: {match: @match, join_url: match_url(@match) + '/join'}
   end
 
   # POST /matches
@@ -18,7 +18,7 @@ class MatchesController < ApplicationController
     @match = Match.new(match_params)
 
     if @match.save
-      render json: @match, status: :created, location: @match
+      render json: { match: @match, join_url: match_url(@match) + '/join' }, status: :created, location: @match
     else
       render json: @match.errors, status: :unprocessable_entity
     end

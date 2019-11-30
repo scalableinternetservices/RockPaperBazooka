@@ -5,7 +5,7 @@ class GameConfigurationsController < ApplicationController
   def index
     @game_configurations = GameConfiguration.all
 
-    render json: @game_configurations
+    paginate json: @game_configurations, per_page: 10
   end
 
   # GET /game_configurations/1
