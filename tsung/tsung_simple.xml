@@ -54,6 +54,9 @@
           <arrivalphase phase="14" duration="60" unit="second" wait_all_sessions_end="true">
                <users arrivalrate="181" unit="second"></users>
           </arrivalphase>
+          <arrivalphase phase="15" duration="60" unit="second" wait_all_sessions_end="true">
+               <users arrivalrate="256" unit="second"></users>
+          </arrivalphase>
      </load>
      <options>
           <!-- Set connection timeout to 2 seconds -->

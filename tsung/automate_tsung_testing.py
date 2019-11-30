@@ -7,7 +7,7 @@ import requests
 
 app_instances = ['t3.micro', 'r5.4xlarge']# ['t3.micro', 't3.medium', 't3.xlarge', 'r5.large', 'r5.4xlarge', 'i3.large']
 db_instances = ['db.t3.micro', 'db.r5.4xlarge']# ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large', 'db.r5.4xlarge']
-num_instances = [1, 2, 4]
+num_instances = [1, 2, 4, 8]
 exclude_instances = {}#{'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large']}
 
 tsung_file_lock = Lock()
