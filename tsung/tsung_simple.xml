@@ -124,6 +124,9 @@
                     </for>
                </for>
 
+               <!-- About how long it takes to navigate to and create a game configuration -->
+               <thinktime value="10"></thinktime>
+
                <!-- Create game configurations -->
                <request>
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
@@ -139,6 +142,9 @@
                     <http url="/game_configurations" version="1.1" method="POST" content_type="application/json" contents="{&quot;name&quot;: &quot;%%_user1_name%%&quot;, &quot;num_matches&quot;: 1, &quot;input_set&quot;: &quot;%%_user1_name%% %%_user2_name%% %%_input_set_var3%%&quot;}"></http>
                </request>
 
+               <!-- About how long it takes to navigate to and create a match -->
+               <thinktime value="10"></thinktime>
+
                <!-- Create Match -->
                <request>
                     <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
@@ -153,6 +159,9 @@
                     <dyn_variable name="match_id" re="Location: http://.*/matches/(.*)\r"></dyn_variable>
                     <http url="/matches" version="1.1" method="POST" content_type="application/json" contents="{&quot;user1_id&quot;: %%_user1_id%%, &quot;game_configuration_id&quot;: %%_game_configuration_id%%}"></http>
                </request>
+
+               <!-- About how long it takes to find and join a match -->
+               <thinktime value="2"></thinktime>
 
                <!-- Join match -->
                <request subst="true">
@@ -192,6 +201,8 @@
                     <http url="/users/%%_user2_id%%" version="1.1" method="GET" content_type="application/json"></http>
                </request>
 
+               <!-- About how long it takes to think over and play a round -->
+               <thinktime value="3"></thinktime>
 
                <!-- Both players play -->
                <request subst="true">
@@ -230,6 +241,9 @@
                          <http url="/matches/%%_match_id%%" version="1.1" method="GET"></http>
                     </request>
                </for>
+
+               <!-- About how long it takes to type and send a message -->
+               <thinktime value="2"></thinktime>
 
                <!-- Both players message and retrieve messages -->
                <request subst="true">
