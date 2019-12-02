@@ -1,4 +1,5 @@
 require 'active_support/core_ext/numeric/bytes'
+require 'dalli'
 
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
@@ -25,7 +26,8 @@ Rails.application.configure do
   else
     config.action_controller.perform_caching = true
 
-    config.cache_store = :memory_store, { size: 64.megabytes }
+    dalli_cache = Dalli::Client.new('memcached:11211')
+    config.cache_store = :mem_cache_store, dalli_cache
   end
 
   # Don't care if the mailer can't send.
