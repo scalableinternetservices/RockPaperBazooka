@@ -10,7 +10,10 @@ class MatchesController < ApplicationController
 
   # GET /matches/1
   def show
-    render json: {match: @match, join_url: match_url(@match) + '/join'}
+    fresh_when last_modified: @match.updated_at
+    if stale?(@match)
+        render json: {match: @match, join_url: match_url(@match) + '/join'}
+    end
   end
 
   # POST /matches
@@ -108,7 +111,9 @@ class MatchesController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_match
-      @match = Match.find(params[:id])
+      @match = Rails.cache.fetch("/matches/#{params[:id]}") do
+          Match.find(params[:id])
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
