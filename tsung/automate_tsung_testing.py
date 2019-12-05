@@ -6,8 +6,8 @@ from time import sleep
 import requests
 import argparse
 
-app_instances = ['t3.micro', 'r5.4xlarge']# ['t3.micro', 't3.medium', 't3.xlarge', 'r5.large', 'r5.4xlarge', 'i3.large']
-db_instances = ['db.t3.micro', 'db.r5.4xlarge']# ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large', 'db.r5.4xlarge']
+app_instances = ['t3.micro']#, 'r5.4xlarge']# ['t3.micro', 't3.medium', 't3.xlarge', 'r5.large', 'r5.4xlarge', 'i3.large']
+db_instances = ['db.t3.micro', 'db.t3.xlarge']#, 'db.r5.4xlarge']# ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large', 'db.r5.4xlarge']
 num_instances = [1, 2, 4, 8]
 exclude_instances = {}#{'t3.micro': ['db.t3.micro', 'db.t3.medium', 'db.t3.xlarge', 'db.r5.large']}
 
@@ -32,7 +32,7 @@ def launch_instances(db_instances, app_instances, num_instances, run_match_cache
                             used_threads += 1
                             used_threads_lock.release()
                             break
-                        sleep(2)
+                    sleep(5)
 
 def launch_and_test(db_instance, app_instance, num_instance, instance_name, run_match_cache_test=False):
     global used_threads, used_threads_lock
@@ -88,7 +88,8 @@ def launch_tsung_instance(instance_name):
 def start_tsung_test(tsung_instance_ip, instance_name, run_match_cache_test=False, main_instance_launched=list()):
     def replace_tsung_url(filepath, instance_name):
         global tsung_file_lock
-        server_url = "          <server host='%s.2iscm2mqr5.us-west-2.elasticbeanstalk.com' port='80' type='tcp'></server>\n" % instance_name
+        name = instance_name if '_match_cache_test' not in instance_name else instance_name[:-17]
+        server_url = "          <server host='%s.2iscm2mqr5.us-west-2.elasticbeanstalk.com' port='80' type='tcp'></server>\n" % name
         tsung_file_lock.acquire()
         with open(filepath, 'r') as file:
             lines = file.readlines()
@@ -110,7 +111,7 @@ def start_tsung_test(tsung_instance_ip, instance_name, run_match_cache_test=Fals
 
     if run_match_cache_test:
         shared_thread_memory.acquire()
-        main_instances_launched.append(False)
+        main_instance_launched.append(False)
         shared_thread_memory.release()
         while not main_instance_launched[0]:
             sleep(5)
