@@ -9,7 +9,7 @@
      </clients>
      <!-- Server side setup -->
      <servers>
-          <server host='app4t3microdbt3xlarge.2iscm2mqr5.us-west-2.elasticbeanstalk.com' port='80' type='tcp'></server>
+          <server host='app1t3microdbt3micro.2iscm2mqr5.us-west-2.elasticbeanstalk.com' port='80' type='tcp'></server>
      </servers>
      <load>
           <arrivalphase phase="1" duration="60" unit="second" wait_all_sessions_end="true">

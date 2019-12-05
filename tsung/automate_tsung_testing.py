@@ -115,6 +115,7 @@ def start_tsung_test(tsung_instance_ip, instance_name, run_match_cache_test=Fals
         shared_thread_memory.release()
         while not main_instance_launched[0]:
             sleep(5)
+        sleep(30)
     elif len(main_instance_launched) == 1:
         while len(main_instance_launched) == 1:
             sleep(5)
