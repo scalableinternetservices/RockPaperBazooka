@@ -113,14 +113,6 @@
                               <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
                               <http url="/matches?page=%%_count%%" version="1.1" method="GET" content_type="application/json"></http>
                          </request>
-                         <request subst="true">
-                              <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                              <http url="/game_configurations?page=%%_count%%" version="1.1" method="GET" content_type="application/json"></http>
-                         </request>
-                         <request subst="true">
-                              <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                              <http url="/users?page=%%_count%%" version="1.1" method="GET" content_type="application/json"></http>
-                         </request>
                     </for>
                </for>
 
@@ -192,14 +184,6 @@
                          <http url="/game_configurations/%%_game_configuration_id%%" version="1.1" method="GET" content_type="application/json"></http>
                     </request>
                </for>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/users/%%_user1_id%%" version="1.1" method="GET" content_type="application/json"></http>
-               </request>
-               <request subst="true">
-                    <match do="abort" when="nomatch">HTTP/1.1 (2|3)\d\d</match>
-                    <http url="/users/%%_user2_id%%" version="1.1" method="GET" content_type="application/json"></http>
-               </request>
 
                <!-- About how long it takes to think over and play a round -->
                <thinktime value="3"></thinktime>
