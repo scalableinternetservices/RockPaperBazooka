@@ -31,28 +31,27 @@ class Show extends React.Component {
 	getMatch = () => {
         Client.match(this.props.matchId)
             .then(response => {
-                console.log(response);
-                let player1moves = response.data.input_set_1 ? response.data.input_set_1.trim().split(" ") : [];
-                let player2moves = response.data.input_set_2 ? response.data.input_set_2.trim().split(" ") : [];
+                let player1moves = response.data.match.input_set_1 ? response.data.match.input_set_1.trim().split(" ") : [];
+                let player2moves = response.data.match.input_set_2 ? response.data.match.input_set_2.trim().split(" ") : [];
                 this.setState({
-					matchData: response.data,
+					matchData: response.data.match,
 					numMoves: Math.min(player1moves.length, player2moves.length),
 					player1moves,
                     player2moves
                 });
                 this.getUsernames();
-                if(response.data.user2_id == null && this.props.userId !== response.data.user1_id){
+                if(response.data.match.user2_id == null && this.props.userId !== response.data.match.user1_id){
                     let data = {
                         user2_id: this.props.userId,
                     }
                     this.setState({ username2: this.props.userName });
-                    Client.joinMatch(response.data.id, data)
+                    Client.joinMatch(response.data.match.id, data)
                         .then(response => {
                             console.log(response)
                         })
                 }
                 if(this.state.input_set.length === 0) {
-                    Client.gameConfiguration(response.data.game_configuration_id)
+                    Client.gameConfiguration(response.data.match.game_configuration_id)
                     .then(response => {
                         let input_set = response.data.input_set.trim().split(" ")
                         this.setState({

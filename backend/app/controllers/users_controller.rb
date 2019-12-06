@@ -5,12 +5,12 @@ class UsersController < ApplicationController
   def index
     @users = User.all
 
-    paginate json: @users, per_page: 10
+    paginate json: @users, per_page: 10, except: [:created_at, :updated_at]
   end
 
   # GET /users/1
   def show
-    render json: @user
+    render json: @user, except: [:created_at, :updated_at]
   end
 
   # POST /users
@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   def update
     if @user.update(user_params)
-      render json: @user
+      render json: @user, except: [:created_at, :updated_at]
     else
       render json: @user.errors, status: :unprocessable_entity
     end
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
 
   def login
     @user = User.find_or_create_by(name: params[:user][:name])
-    render json: @user
+    render json: @user, except: [:created_at, :updated_at]
   end
 
   private
