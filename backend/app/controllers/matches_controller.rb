@@ -3,8 +3,11 @@ class MatchesController < ApplicationController
 
   # GET /matches
   def index
-    @matches = Match.all
-
+    last_modified = Match.order(:updated_at).last
+    last_modified_str = last_modified.updated_at.utc.to_s(:number)
+    @matches = Rails.cache.fetch("all_matches/#{last_modified_str}") do
+        Match.all
+    end
     paginate json: @matches, per_page: 10
   end
 
@@ -111,7 +114,9 @@ class MatchesController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_match
-      @match = Rails.cache.fetch("/matches/#{params[:id]}") do
+      last_modified = Match.order(:updated_at).last
+      last_modified_str = last_modified.updated_at.utc.to_s(:number)
+      @match = Rails.cache.fetch("/matches/#{params[:id]}/#{last_modified_str}") do
           Match.find(params[:id])
       end
     end
