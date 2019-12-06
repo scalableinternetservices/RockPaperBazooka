@@ -5,12 +5,31 @@ class MatchesController < ApplicationController
   def index
     @matches = Match.all
 
-    paginate json: @matches, per_page: 10, except: [:created_at, :updated_at]
+    paginate json: @matches, include: {
+      user1: {
+        only: ['name']
+      }, 
+      user2: {
+        only: ['name']
+      },
+      game_configuration: {
+        only: ['name']
+      }}, 
+      per_page: 10, except: [:created_at, :updated_at]
   end
 
   # GET /matches/1
   def show
-    render json: {match: @match, join_url: match_url(@match) + '/join'}
+    render json: {match: @match, join_url: match_url(@match) + '/join'}, include: {
+      user1: {
+        only: ['name']
+      }, 
+      user2: {
+        only: ['name']
+      },
+      game_configuration: {
+        only: ['name']
+      }}
   end
 
   # POST /matches
