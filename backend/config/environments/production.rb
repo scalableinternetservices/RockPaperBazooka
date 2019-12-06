@@ -47,7 +47,16 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  # config.cache_store = :mem_cache_store
+  dalli_cache = Dalli::Client.new('memcached:11211')
+  config.cache_store = :mem_cache_store,
+                       ("mc4.c1.us-west-2.ec2.memcachier.com:11211" || "").split(","),
+                       {:username => "D99B9F",
+                        :password => "FB78B913CCE6597130ABF42B5EDBB4BF",
+                        :failover => true,
+                        :socket_timeout => 1.5,
+                        :socket_failure_delay => 0.2,
+                        :down_retry_delay => 60
+                      }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque

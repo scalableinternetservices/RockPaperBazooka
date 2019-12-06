@@ -12,4 +12,9 @@ services:
       - "3000:3000"
     volumes:
       - .:/app
+  memcached:
+    container_name: memcached
+    image: memcached:latest
+    ports:
+        - "11211:11211"
 version: "3"

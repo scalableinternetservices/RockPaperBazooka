@@ -3,14 +3,20 @@ class MatchesController < ApplicationController
 
   # GET /matches
   def index
-    @matches = Match.all
-
+    last_modified = Match.order(:updated_at).last
+    last_modified_str = last_modified.nil? ? "" : last_modified.updated_at.utc.to_s(:number)
+    @matches = Rails.cache.fetch("all_matches/#{last_modified_str}") do
+        Match.all
+    end
     paginate json: @matches, per_page: 10
   end
 
   # GET /matches/1
   def show
-    render json: {match: @match, join_url: match_url(@match) + '/join'}
+    fresh_when last_modified: @match.updated_at
+    if stale?(@match)
+        render json: {match: @match, join_url: match_url(@match) + '/join'}
+    end
   end
 
   # POST /matches
@@ -108,7 +114,11 @@ class MatchesController < ApplicationController
     end
     # Use callbacks to share common setup or constraints between actions.
     def set_match
-      @match = Match.find(params[:id])
+      last_modified = Match.order(:updated_at).last
+      last_modified_str = last_modified.nil? ? "" : last_modified.updated_at.utc.to_s(:number)
+      @match = Rails.cache.fetch("/matches/#{params[:id]}/#{last_modified_str}") do
+          Match.find(params[:id])
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
