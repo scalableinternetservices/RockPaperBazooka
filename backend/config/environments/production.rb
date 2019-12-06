@@ -48,7 +48,15 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   dalli_cache = Dalli::Client.new('memcached:11211')
-  config.cache_store = :mem_cache_store, dalli_cache
+  config.cache_store = :mem_cache_store,
+                       ("mc5.c1.us-west-2.ec2.memcachier.com:11211" || "").split(","),
+                       {:username => "5E5D2D",
+                        :password => "D6A3B2A5B6FE93CF9D19C15EAC1E23F9",
+                        :failover => true,
+                        :socket_timeout => 1.5,
+                        :socket_failure_delay => 0.2,
+                        :down_retry_delay => 60
+                      }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
