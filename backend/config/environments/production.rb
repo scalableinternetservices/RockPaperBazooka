@@ -49,9 +49,9 @@ Rails.application.configure do
   # Use a different cache store in production.
   dalli_cache = Dalli::Client.new('memcached:11211')
   config.cache_store = :mem_cache_store,
-                       ("mc5.c1.us-west-2.ec2.memcachier.com:11211" || "").split(","),
-                       {:username => "5E5D2D",
-                        :password => "D6A3B2A5B6FE93CF9D19C15EAC1E23F9",
+                       ("mc4.c1.us-west-2.ec2.memcachier.com:11211" || "").split(","),
+                       {:username => "D99B9F",
+                        :password => "FB78B913CCE6597130ABF42B5EDBB4BF",
                         :failover => true,
                         :socket_timeout => 1.5,
                         :socket_failure_delay => 0.2,
