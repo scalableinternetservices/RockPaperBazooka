@@ -5,7 +5,7 @@ class MatchesController < ApplicationController
   def index
     @matches = Match.all
 
-    paginate json: @matches, per_page: 10
+    paginate json: @matches, per_page: 10, except: [:created_at, :updated_at]
   end
 
   # GET /matches/1
@@ -26,7 +26,7 @@ class MatchesController < ApplicationController
 
   def join
     if !@match.user2_id && (join_params.to_i != @match.user1_id) && @match.update_attribute(:user2_id, join_params)
-      render json: @match
+      render json: @match, except: [:created_at, :updated_at]
     else
       render json: @match.errors, status: :unprocessable_entity
     end
@@ -50,7 +50,7 @@ class MatchesController < ApplicationController
     end
 
     if @match.save
-      render json: @match, status: :created, location: @match
+      render json: @match, status: :created, location: @match, except: [:created_at, :updated_at]
     else
       render json: @match.errors, status: :unprocessable_entity
     end
@@ -59,7 +59,7 @@ class MatchesController < ApplicationController
   # PATCH/PUT /matches/1
   def update
     if @match.update(match_params)
-      render json: @match
+      render json: @match, except: [:created_at, :updated_at]
     else
       render json: @match.errors, status: :unprocessable_entity
     end

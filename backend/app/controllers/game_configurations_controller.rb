@@ -5,12 +5,12 @@ class GameConfigurationsController < ApplicationController
   def index
     @game_configurations = GameConfiguration.all
 
-    paginate json: @game_configurations, per_page: 10
+    paginate json: @game_configurations, per_page: 10, except: [:created_at, :updated_at]
   end
 
   # GET /game_configurations/1
   def show
-    render json: @game_configuration
+    render json: @game_configuration, except: [:created_at, :updated_at]
   end
 
   # POST /game_configurations
@@ -33,7 +33,7 @@ class GameConfigurationsController < ApplicationController
   # PATCH/PUT /game_configurations/1
   def update
     if @game_configuration.update(game_configuration_params)
-      render json: @game_configuration
+      render json: @game_configuration, except: [:created_at, :updated_at]
     else
       render json: @game_configuration.errors, status: :unprocessable_entity
     end
