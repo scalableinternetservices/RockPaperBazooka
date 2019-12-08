@@ -4,6 +4,6 @@ class Match < ApplicationRecord
     validates :game_configuration_id, allow_blank: false, :numericality => { :greater_than_or_equal_to => 0 }
     has_many :messages
     belongs_to :user1, class_name: "User", foreign_key: "user1_id"
-    belongs_to :user2, class_name: "User", foreign_key: "user2_id"
+    belongs_to :user2, class_name: "User", foreign_key: "user2_id", optional: true
     belongs_to :game_configuration, class_name: "GameConfiguration", foreign_key: "game_configuration_id"
 end
