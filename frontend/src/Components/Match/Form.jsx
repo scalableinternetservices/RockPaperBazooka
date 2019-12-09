@@ -26,9 +26,10 @@ class MatchForm extends React.Component {
       user1_id: this.props.userId,
       game_configuration_id: this.state.game_configuration_id,
     }
+
     Client.createMatch(data)
       .then(response => {
-        this.props.updateCurrentMatch(response.data.id)
+        this.props.updateCurrentMatch(response.data.match.id)
         this.setState({ redirect: true})
       })
       .catch(console.log)
@@ -39,7 +40,8 @@ class MatchForm extends React.Component {
       .then(response => {
         console.log(response)
         this.setState({
-          configurations: response.data
+          configurations: response.data,
+          game_configuration_id: response.data[0].id
         })
       })
       .catch(console.log);

@@ -83,8 +83,8 @@ class Client {
       });
       return victor;
   }
-  static isGameOver = (player1moves, player2moves, game_configuration) => {
-      return (player1moves.length === game_configuration.num_matches && player2moves.length === game_configuration.num_matches);
+  static isGameOver = (player1moves, player2moves, num_matches) => {
+      return (player1moves.length === num_matches && player2moves.length === num_matches);
   }
 }
 
