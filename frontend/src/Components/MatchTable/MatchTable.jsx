@@ -1,7 +1,7 @@
 import React from 'react';
 import "./MatchTable.css"
 import Client from "../../Clients/Client";
-import { Button, Table } from 'reactstrap'
+import { Button, Input, Table } from 'reactstrap'
 import {
   Redirect
 } from "react-router-dom";
@@ -11,7 +11,9 @@ class MatchTable extends React.Component{
             super(props)
             this.state = {
                 matches: [],
-                redirect: false
+                redirect: false,
+                pageNumber: 1,
+                pageInput: 1
             }
     }
 
@@ -23,8 +25,16 @@ class MatchTable extends React.Component{
         clearTimeout(this.timeoutId);
     }
 
+    onChange = e => {
+      if (e.target.type === "number") {
+        this.setState({ [e.target.name]: parseInt(e.target.value) });
+      } else {
+        this.setState({ [e.target.name]: e.target.value });
+      }
+    };
+
     getMatches = () => {
-        Client.matches()
+        Client.matches(this.state.pageNumber)
             .then(response => {
                 console.log(response);
                 const user_ids = []
@@ -46,6 +56,10 @@ class MatchTable extends React.Component{
         this.props.updateCurrentMatch(matchId);
         this.setState({ redirect: true });
     };
+
+    setPageNumber = () => {
+        this.setState({ pageNumber: this.state.pageInput})
+    }
 
     render() {
         const sortedMatches = this.state.matches.sort(function(a, b) {
@@ -88,6 +102,18 @@ class MatchTable extends React.Component{
         return (
             <div>
                 {this.state.redirect ? <Redirect to='/match' /> : null}
+                <div className="pageNumber">
+                    <h3>Page</h3>
+                    <Input
+                      name="pageInput"
+                      onChange={this.onChange}
+                      value={this.state.pageInput}
+                      className="myInput"
+                    />
+                    <Button className='myButton' type="submit" color="primary" onClick={this.setPageNumber}>
+                      Submit
+                    </Button>
+                </div>
                 <h2>Your Current Matches</h2>
                 <Table>
                     <thead>

@@ -26,9 +26,9 @@ class Client {
       axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/matches/${id}`);
   };
-  static matches = () => {
+  static matches = (pageNum) => {
       axios.defaults.baseURL = localStorage.getItem("url");
-    return axios.get("/matches");
+    return axios.get(`/matches/?page=${pageNum}`);
   };
   static createMatch = data => {
       axios.defaults.baseURL = localStorage.getItem("url");

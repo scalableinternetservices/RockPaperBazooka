@@ -5,3 +5,17 @@ h2 {
 .button {
     width: 20%;
 }
+
+.pageNumber {
+    margin: auto;
+    width: 5%;
+    padding-bottom: 50px;
+}
+
+.myInput {
+    text-align: center;
+}
+
+.myButton {
+    margin-top: 20px;
+}
