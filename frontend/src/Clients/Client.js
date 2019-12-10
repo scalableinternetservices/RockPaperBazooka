@@ -42,9 +42,9 @@ class Client {
       axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/game_configurations/${id}`);
   };
-  static gameConfigurations = () => {
+  static gameConfigurations = (pageNum) => {
       axios.defaults.baseURL = localStorage.getItem("url");
-    return axios.get("/game_configurations");
+    return axios.get(`/game_configurations/?page=${pageNum}`);
   };
   static gameConfiguration = id => {
       axios.defaults.baseURL = localStorage.getItem("url");
