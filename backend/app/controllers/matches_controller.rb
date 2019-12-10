@@ -8,13 +8,13 @@ class MatchesController < ApplicationController
     paginate json: @matches, include: {
       user1: {
         only: ['name']
-      }, 
+      },
       user2: {
         only: ['name']
       },
       game_configuration: {
-        only: ['name']
-      }}, 
+        only: ['name', 'num_matches']
+      }},
       per_page: 10, except: [:created_at, :updated_at]
   end
 
@@ -23,7 +23,7 @@ class MatchesController < ApplicationController
     render json: {match: @match, join_url: match_url(@match) + '/join'}, include: {
       user1: {
         only: ['name']
-      }, 
+      },
       user2: {
         only: ['name']
       },

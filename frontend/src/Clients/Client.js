@@ -26,9 +26,9 @@ class Client {
       axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/matches/${id}`);
   };
-  static matches = () => {
+  static matches = (pageNum) => {
       axios.defaults.baseURL = localStorage.getItem("url");
-    return axios.get("/matches");
+    return axios.get(`/matches/?page=${pageNum}`);
   };
   static createMatch = data => {
       axios.defaults.baseURL = localStorage.getItem("url");
@@ -42,9 +42,9 @@ class Client {
       axios.defaults.baseURL = localStorage.getItem("url");
     return axios.get(`/game_configurations/${id}`);
   };
-  static gameConfigurations = () => {
+  static gameConfigurations = (pageNum) => {
       axios.defaults.baseURL = localStorage.getItem("url");
-    return axios.get("/game_configurations");
+    return axios.get(`/game_configurations/?page=${pageNum}`);
   };
   static gameConfiguration = id => {
       axios.defaults.baseURL = localStorage.getItem("url");
@@ -83,8 +83,8 @@ class Client {
       });
       return victor;
   }
-  static isGameOver = (player1moves, player2moves, game_configuration) => {
-      return (player1moves.length === game_configuration.num_matches && player2moves.length === game_configuration.num_matches);
+  static isGameOver = (player1moves, player2moves, num_matches) => {
+      return (player1moves.length === num_matches && player2moves.length === num_matches);
   }
 }
 

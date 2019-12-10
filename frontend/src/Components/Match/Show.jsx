@@ -37,9 +37,10 @@ class Show extends React.Component {
 					matchData: response.data.match,
 					numMoves: Math.min(player1moves.length, player2moves.length),
 					player1moves,
-                    player2moves
+                    player2moves,
+                    username1: response.data.match.user1.name,
+                    username2: response.data.match.user2 ? response.data.match.user2.name : "",
                 });
-                this.getUsernames();
                 if(response.data.match.user2_id == null && this.props.userId !== response.data.match.user1_id){
                     let data = {
                         user2_id: this.props.userId,
@@ -62,8 +63,7 @@ class Show extends React.Component {
                         console.log(response)
                     })
                 }
-                // this.getUserNames(user_ids)
-                if (Client.isGameOver(this.state.player1moves, this.state.player2moves, this.state.gameConfiguration)) {
+                if (Client.isGameOver(this.state.player1moves, this.state.player2moves, this.state.gameConfiguration.num_matches)) {
                     const victor = Client.determineWinner(this.state.player1moves, this.state.player2moves, this.state.input_set);
                     this.setState({
                         finalScore: victor,
@@ -73,23 +73,6 @@ class Show extends React.Component {
             })
             .catch(console.log);
         setTimeout(this.getMatch, 2000);
-    };
-
-    getUsernames = () => {
-        if (this.state.username1 === "") {
-            Client.getUser(this.state.matchData.user1_id)
-                .then(response => {
-                    this.setState({ username1: response.data.name })
-                })
-                .catch(console.log);
-        }
-        if (this.state.matchData.user2_id !== null && this.state.username2 === "") {
-            Client.getUser(this.state.matchData.user2_id)
-                .then(response => {
-                    this.setState({ username2: response.data.name });
-                })
-                .catch(console.log);
-        }
     };
 
     playMove = e => {

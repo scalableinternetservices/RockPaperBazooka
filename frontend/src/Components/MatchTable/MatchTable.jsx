@@ -1,7 +1,7 @@
 import React from 'react';
 import "./MatchTable.css"
 import Client from "../../Clients/Client";
-import { Button, Table } from 'reactstrap'
+import { Button, Input, Table } from 'reactstrap'
 import {
   Redirect
 } from "react-router-dom";
@@ -11,9 +11,9 @@ class MatchTable extends React.Component{
             super(props)
             this.state = {
                 matches: [],
-                users: new Map(),
                 redirect: false,
-                configurations: new Map()
+                pageNumber: 1,
+                pageInput: 1
             }
     }
 
@@ -25,8 +25,16 @@ class MatchTable extends React.Component{
         clearTimeout(this.timeoutId);
     }
 
+    onChange = e => {
+      if (e.target.type === "number") {
+        this.setState({ [e.target.name]: parseInt(e.target.value) });
+      } else {
+        this.setState({ [e.target.name]: e.target.value });
+      }
+    };
+
     getMatches = () => {
-        Client.matches()
+        Client.matches(this.state.pageNumber)
             .then(response => {
                 console.log(response);
                 const user_ids = []
@@ -39,47 +47,19 @@ class MatchTable extends React.Component{
                     }
                 })
                 this.setState({ matches: response.data });
-                this.getUserNames(user_ids);
-                this.getConfigurations(configuration_ids);
             })
             .catch(console.log);
         this.timeoutId = setTimeout(this.getMatches, 2000);
     };
 
-    getUserNames = (user_ids) => {
-        user_ids.forEach(user_id => {
-            if (!(this.state.users.get(user_id))) {
-                Client.getUser(user_id)
-                    .then(response => {
-                        const { users } = this.state;
-                        console.log(response);
-                        users.set(user_id, response.data.name);
-                        this.setState({ users });
-                    })
-                    .catch(console.log);
-            }
-        });
-      };
-
-    getConfigurations = (configuration_ids) => {
-        configuration_ids.forEach(configuration_id => {
-            if (!(this.state.configurations.get(configuration_id))) {
-                Client.gameConfiguration(configuration_id)
-                    .then(response => {
-                        const { configurations } = this.state;
-                        console.log(response);
-                        configurations.set(configuration_id, response.data);
-                        this.setState({ configurations });
-                    })
-                    .catch(console.log);
-            }
-        });
-    }
-
     onClick = (matchId) => {
         this.props.updateCurrentMatch(matchId);
         this.setState({ redirect: true });
     };
+
+    setPageNumber = () => {
+        this.setState({ pageNumber: this.state.pageInput})
+    }
 
     render() {
         const sortedMatches = this.state.matches.sort(function(a, b) {
@@ -96,24 +76,23 @@ class MatchTable extends React.Component{
         for (const [index, value] of sortedMatches.entries()) {
             const player1moves = value.input_set_1 ? value.input_set_1.trim().split(" ") : [];
             const player2moves = value.input_set_2 ? value.input_set_2.trim().split(" ") : [];
-            const configuration = this.state.configurations.get(value.game_configuration_id);
-            if (configuration && !Client.isGameOver(player1moves, player2moves, configuration)) {
+            if (!Client.isGameOver(player1moves, player2moves, value.game_configuration.num_matches)) {
                 if(value.user1_id === this.props.userId || value.user2_id === this.props.userId){
                     itemsMine.push(
                         <tr key={index}>
                             <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>Resume</Button></td>
-                            <td>{this.state.users.get(value.user1_id)}</td>
-                            <td>{this.state.users.get(value.user2_id)}</td>
-                            <td>{configuration ? configuration.name : null}</td>
+                            <td>{value.user1.name}</td>
+                            <td>{value.user2 ? value.user2.name : ""}</td>
+                            <td>{value.game_configuration.name}</td>
                         </tr>
                     )
                 } else {
                     itemsOther.push(
                         <tr key={index}>
                             <td><Button className="button" type="submit" color="primary" onClick={() => {this.onClick(value.id)}}>{value.user2_id ? 'Spectate' : 'Join'}</Button></td>
-                            <td>{this.state.users.get(value.user1_id)}</td>
-                            <td>{this.state.users.get(value.user2_id)}</td>
-                            <td>{configuration ? configuration.name : null}</td>
+                            <td>{value.user1.name}</td>
+                            <td>{value.user2 ? value.user2.name : ""}</td>
+                            <td>{value.game_configuration.name}</td>
                         </tr>
                     )
                 }
@@ -123,6 +102,18 @@ class MatchTable extends React.Component{
         return (
             <div>
                 {this.state.redirect ? <Redirect to='/match' /> : null}
+                <div className="pageNumber">
+                    <h3>Page</h3>
+                    <Input
+                      name="pageInput"
+                      onChange={this.onChange}
+                      value={this.state.pageInput}
+                      className="myInput"
+                    />
+                    <Button className='myButton' type="submit" color="primary" onClick={this.setPageNumber}>
+                      Submit
+                    </Button>
+                </div>
                 <h2>Your Current Matches</h2>
                 <Table>
                     <thead>
