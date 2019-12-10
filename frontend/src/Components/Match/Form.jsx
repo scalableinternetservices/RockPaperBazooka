@@ -94,7 +94,7 @@ class MatchForm extends React.Component {
               Submit
             </Button>
         </div>
-        <div style={{margin: 'auto', width: '50%'}}>
+        <div>
             <Table>
                 <thead>
                     <tr>
