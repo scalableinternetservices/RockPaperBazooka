@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/RockPaperBazooka/precache-manifest.dc7ff23d6141c3d7ebc424de9e10c9ec.js"
+  "/RockPaperBazooka/precache-manifest.57e99b7ae026e71b212a24a7deba3c1f.js"
 );
 
 self.addEventListener('message', (event) => {
