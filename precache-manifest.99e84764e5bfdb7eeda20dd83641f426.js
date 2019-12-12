@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8539988c7baf339dbee96ede66db702c",
+    "revision": "290a80bbf912761e54f3fd1b919c1125",
     "url": "/RockPaperBazooka/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/RockPaperBazooka/static/css/2.83ace7dd.chunk.css"
   },
   {
-    "revision": "b9fac82773ba95b93131",
+    "revision": "78bf684cc44db8bf6acb",
     "url": "/RockPaperBazooka/static/css/main.9abe7376.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/RockPaperBazooka/static/js/2.bfd5e558.chunk.js"
   },
   {
-    "revision": "b9fac82773ba95b93131",
-    "url": "/RockPaperBazooka/static/js/main.b00687ca.chunk.js"
+    "revision": "78bf684cc44db8bf6acb",
+    "url": "/RockPaperBazooka/static/js/main.3a29192f.chunk.js"
   },
   {
     "revision": "e96f52d93f23c500b88c",
