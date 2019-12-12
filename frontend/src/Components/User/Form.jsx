@@ -12,7 +12,7 @@ class UserForm extends React.Component {
     this.state = {
         name: "",
         loggedIn: false,
-        url: "http://localhost:3000/"
+        url: "http://app1t3microdbt3micro.2iscm2mqr5.us-west-2.elasticbeanstalk.com/"
     };
   }
 
